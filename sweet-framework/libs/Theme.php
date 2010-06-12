@@ -31,10 +31,26 @@ class V {
 }
 class B {
 	//get ya blocks!
-	public static function get($tagName) {
-		
+	
+	public static function get($reallyHopeNoOneNamesThereVaribleThis, $values=array()) {
+		extract((array) $values);
+		ob_start();
+		include(LOC . '/sweet-framework/blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
+		/*
+		f_first
+
+		if(is_array($values[0])) {
+			$attributes 
+		}
+
+
+		'<' . $tagName . '>'
+		*/
+
+		return ob_get_clean();
 	}
-	public static function __callStatic($tagName, $values=array()) {
+	
+	public static function __callStatic($tagName, $values=array(), $childern) {
 		if(is_array($values[0])) {
 			$attributes = join(' ', f_keyMap(
 				function($v, $k) {
