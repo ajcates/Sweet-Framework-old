@@ -35,7 +35,17 @@ class B {
 		extract((array) f_first($values));
 		ob_start();
 		include(LOC . '/sweet-framework/blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
-		
+		/*
+		f_first
+
+		if(is_array($values[0])) {
+			$attributes 
+		}
+
+
+		'<' . $tagName . '>'
+		*/
+
 		return ob_get_clean();
 	}
 }
