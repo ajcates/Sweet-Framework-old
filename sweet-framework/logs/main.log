@@ -1,5 +1,5 @@
 
-SweetFramework - June 12, 2010, 2:38 pm | App Started : 0
+SweetFramework - June 12, 2010, 2:53 pm | App Started : 0
 
 
 servar : Array
@@ -17,7 +17,7 @@ servar : Array
     [DOCUMENT_ROOT] => /Users/ajcates/Sites
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/ajcates/Sites/projects/sweet-framework/index.php
-    [REMOTE_PORT] => 60260
+    [REMOTE_PORT] => 64543
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.0
     [REQUEST_METHOD] => GET
@@ -25,7 +25,7 @@ servar : Array
     [REQUEST_URI] => /projects/sweet-framework/
     [SCRIPT_NAME] => /projects/sweet-framework/index.php
     [PHP_SELF] => /projects/sweet-framework/index.php
-    [REQUEST_TIME] => 1276378716
+    [REQUEST_TIME] => 1276379622
     [argv] => Array
         (
         )
@@ -104,5 +104,5 @@ projects: Array
 
 
 
-App | End: 0.00763916969299
+App | End: 0.00651097297668
 
