@@ -31,8 +31,9 @@ class V {
 }
 class B {
 	//get ya blocks!
-	public static function __callStatic($reallyHopeNoOneNamesThereVaribleThis, $values=array()) {
-		extract((array) f_first($values));
+	
+	public static function get($reallyHopeNoOneNamesThereVaribleThis, $values=array()) {
+		extract((array) $values);
 		ob_start();
 		include(LOC . '/sweet-framework/blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
 		/*
@@ -47,6 +48,28 @@ class B {
 		*/
 
 		return ob_get_clean();
+	}
+	
+	public static function __callStatic($tagName, $values=array()) {
+		
+		if(is_array($values[0])) {
+			//D::log($values[0], '0 values');
+			$attributes = ' ' . join(' ', f_keyMap(
+				function($v, $k) {
+					return $k . '="' . join(', ', (array)$v)  . '"';
+				},
+				$values[0]
+			));
+			$childern = f_rest($values);
+		} else {
+			$attributes = '';
+			$childern =& $values;
+		}
+		if(empty($childern) && $tagName != 'script') {
+			return '<' . $tagName . $attributes . '/>';
+		} else {
+			return '<' . $tagName . $attributes . '>' . join((array)$childern) . '</' . $tagName . '>';
+		}
 	}
 }
 
