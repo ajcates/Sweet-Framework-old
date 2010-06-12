@@ -31,6 +31,9 @@ class V {
 }
 class B {
 	//get ya blocks!
+	public static function get($tagName) {
+		
+	}
 	public static function __callStatic($tagName, $values=array()) {
 		if(is_array($values[0])) {
 			$attributes = join(' ', f_keyMap(
