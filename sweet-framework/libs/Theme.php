@@ -51,24 +51,22 @@ class B {
 	}
 	
 	public static function __callStatic($tagName, $values=array()) {
-		$childern = f_filter('is_string', f_rest(func_get_args()));
 		if(is_array($values[0])) {
-			$attributes = join(' ', f_keyMap(
+			$attributes = ' ' . join(' ', f_keyMap(
 				function($v, $k) {
 					$k . '="' . join(', ', (array)$v)  . '"';
 				},
 				$values[0]
 			));
-			$childern = (string)@$values[1];
+			$childern = f_rest($values);
 		} else {
 			$attributes = '';
-			$childern = $values[0];
+			$childern =& $values;
 		}
-		//$tagName = $values[0];
-		if(empty($text) && $tagName != 'script') {
-			return '<' . $tagName . ' ' . $attributes . '/>';
+		if(empty($childern) && $tagName != 'script') {
+			return D::log('<' . $tagName . $attributes . '/>', 'tag');
 		} else {
-			return '<' . $tagName . ' ' . $attributes . '>' . join((array)$childern) . '</' . $tagName . '>';
+			return D::log('<' . $tagName . $attributes . '>' . join((array)$childern) . '</' . $tagName . '>', 'tag');
 		}
 	}
 }
