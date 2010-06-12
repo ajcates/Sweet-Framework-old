@@ -15,7 +15,7 @@ abstract class dbDriver {
 
 class Query extends App {
 	
-	private $_mode;
+	private $_mode = 'select';
 	private $_whereData = array();
 	private $_selectData;
 	private $_joinData;
@@ -63,8 +63,8 @@ class Query extends App {
 		$this->_mode='insert';
 		return $this->from($tableName);
 	}
-
-	public function select($cols='*') {
+	
+	public function reset() {
 		$this->_mode = 'select';
 		self::$_fromValue = null;
 		$this->_whereData = array();
@@ -79,6 +79,9 @@ class Query extends App {
 		$this->_updateValue = null;
 		$this->_insert = null;
 		$this->_selectFunction = null;
+	}
+
+	public function select($cols='*') {
 		if(is_string($cols)) {
 			$this->_selectData = func_get_args();
 		} else {
@@ -303,7 +306,7 @@ class Query extends App {
 		switch ($this->_mode) {
 			case 'select':
 				//adds in our select values
-				
+				D::log('hello');
 				$sqlString = 'SELECT ' . $this->_buildSelect() . "\n" . ' FROM ' . join(', ', (array)Query::$_fromValue) . $this->_buildJoins() . "\n" .  $this->_buildWhereString($this->_whereValue) . $this->_buildOrderBy() . $this->_buildLimit();
 				break;
 			case 'update':
@@ -352,6 +355,7 @@ class Query extends App {
 	
 	public function go() {
 		self::$last = $this->_build();
+		$this->reset();
 		if(!$this->_driver->query(self::$last)) {
 			return false;
 		}
@@ -360,6 +364,7 @@ class Query extends App {
 	
 	public function results($type='object') {
 		self::$last = $this->_build();
+		$this->reset();
 		return $this->_driver->query(self::$last, $type);
 	}
 	

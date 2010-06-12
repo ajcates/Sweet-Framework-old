@@ -24,7 +24,8 @@ class SweetFramework extends App {
 		D::time('App', 'SweetFramework - ' . date("F j, Y, g:i a"));
 		
 		$appInfo = $this->libs->Config->get('SweetFramework', 'app');
-				
+		
+		
 		//define('APPLOC', LOC . $appInfo['folder']);
 		
 		foreach($appInfo['paths'] as $k => $v) {

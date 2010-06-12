@@ -1,5 +1,5 @@
 
-SweetFramework - June 12, 2010, 9:18 am | App Started : 0
+SweetFramework - June 12, 2010, 10:13 am | App Started : 0
 
 
 new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
@@ -25,16 +25,17 @@ Initing Controller…: Array
 DB Connected
 
 
+hello
+
+
 SQL Build: SELECT *
  FROM projects
 
- LIMIT 0, 10
 
 
 Sql call: SELECT *
  FROM projects
 
- LIMIT 0, 10
 
 
 projects: Array
@@ -49,5 +50,5 @@ projects: Array
 
 
 
-App | End: 0.00647711753845
+App | End: 0.00876903533936
 

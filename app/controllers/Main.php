@@ -23,7 +23,7 @@ Class Main extends App {
 		 
 		//Load a library.
 		//$this->lib('test/Test');
-		$this->lib('Template');
+		$this->lib(array('Template', 'Uri'));
 	}
 
 	function index() {
@@ -40,16 +40,17 @@ Class Main extends App {
 		
 		
 		$this->libs->Template->set(array(
-			'projects' => $this->models->Projects->get()
+			'projects' => $this->models->Projects->all()
 		));
 
 		
-		$this->libs->Template->render('default.php');
+		$this->libs->Template->render('dashboard.php');
 		//
 	}
 	
 	function project() {
-		//$this->libs->
+		
+		$this->libs->Uri->getPart(2);
 	}
 	
 	function addProject() {
