@@ -1,5 +1,5 @@
 
-SweetFramework - June 12, 2010, 10:13 am | App Started : 0
+SweetFramework - June 12, 2010, 10:28 am | App Started : 0
 
 
 new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
@@ -10,45 +10,19 @@ Loading Controller…:
 
 uri array: Array
 (
-    [0] => 
+    [0] => projects
+    [1] => 1
 )
 
 
 
 Initing Controller…: Array
 (
-    [0] => 
+    [0] => projects
+    [1] => 1
 )
 
 
 
-DB Connected
-
-
-hello
-
-
-SQL Build: SELECT *
- FROM projects
-
-
-
-Sql call: SELECT *
- FROM projects
-
-
-
-projects: Array
-(
-    [0] => <h2>Test</h2>
-<time>1276309293</time>
-<p>test project</p>
-    [1] => <h2>Other Project</h2>
-<time>1276309345</time>
-<p>just another project</p>
-)
-
-
-
-App | End: 0.00876903533936
+App | End: 0.00196194648743
 

@@ -10,7 +10,7 @@
 			B::ul(array(
 				'items' => D::log(array_map(
 					function($v) {
-						return V::get('project/detail', array('project' => $v));
+						return V::get('project/brief', array('project' => $v));
 					},
 					$projects
 				), 'projects')

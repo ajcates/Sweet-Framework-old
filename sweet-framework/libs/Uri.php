@@ -26,8 +26,9 @@ class Uri extends App {
 		//http or https?
 		$this->protocol = strtolower(strstr($_SERVER['SERVER_PROTOCOL'], '/', true));;
 		
-		$scriptLoc = substr($_SERVER['REQUEST_URI'], 0, -strlen($this->request));
-		define('URL', $this->protocol . '://' . $this->domain . substr($scriptLoc, 0, -strlen(strrchr($scriptLoc, '/'))+1) );
+		//$scriptLoc = substr($_SERVER['REQUEST_URI'], 0, -strlen($this->request));
+		
+		define('URL', $this->protocol . '://' . $this->domain . $_SERVER['REQUEST_URI']);
 		
 		if($this->lib('Config')->get('site', 'prettyUrls')) {
 			define('SITE_URL', URL);
