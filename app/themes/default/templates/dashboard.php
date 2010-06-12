@@ -8,6 +8,7 @@
 			T::get('site/nav')
 		),
 		B::section(
+			T::get('site/login'),
 			B::h3('Projects'),
 			B::ul(join(array_map(
 				function($v) {
