@@ -1,17 +1,57 @@
 
-SweetFramework - June 12, 2010, 10:59 am | App Started : 0
+SweetFramework - June 12, 2010, 12:17 pm | App Started : 0
+
+
+servar : Array
+(
+    [HTTP_HOST] => localhost
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, like Gecko)
+    [HTTP_ACCEPT] => application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+    [HTTP_ACCEPT_LANGUAGE] => en-us
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_COOKIE] => __utma=111872281.1802370866.1274891818.1274891818.1275541795.2; __utmz=111872281.1274891818.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
+    [HTTP_CONNECTION] => keep-alive
+    [PATH] => /usr/bin:/bin:/usr/sbin:/sbin
+    [SERVER_SIGNATURE] => 
+    [SERVER_SOFTWARE] => Apache
+    [SERVER_NAME] => localhost
+    [SERVER_ADDR] => ::1
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => ::1
+    [DOCUMENT_ROOT] => /Users/ajcates/Sites
+    [SERVER_ADMIN] => you@example.com
+    [SCRIPT_FILENAME] => /Users/ajcates/Sites/projects/sweet-framework/index.php
+    [REMOTE_PORT] => 53344
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => GET
+    [QUERY_STRING] => projects
+    [REQUEST_URI] => /projects/sweet-framework/?projects
+    [SCRIPT_NAME] => /projects/sweet-framework/index.php
+    [PHP_SELF] => /projects/sweet-framework/index.php
+    [REQUEST_TIME] => 1276370225
+    [argv] => Array
+        (
+            [0] => projects
+        )
+
+    [argc] => 1
+)
+
+
+
+request: projects
+
+
+URL: http://localhost/projects/sweet-framework/
 
 
 new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
 
 
-Loading Controller…: 
-
-
 uri array: Array
 (
     [0] => projects
-    [1] => 1
 )
 
 
@@ -19,125 +59,37 @@ uri array: Array
 Initing Controller…: Array
 (
     [0] => projects
-    [1] => 1
 )
 
 
 
-controller func: Closure Object
+DB Connected
+
+
+hello
+
+
+SQL Build: SELECT *
+ FROM projects
+
+
+
+Sql call: SELECT *
+ FROM projects
+
+
+
+projects: Array
 (
-    [static] => Array
-        (
-            [func] => Array
-                (
-                    [0] => Main Object
-                        (
-                            [libs:protected] => stdClass Object
-                                (
-                                    [Template] => Template Object
-                                        (
-                                            [data:Template:private] => Array
-                                                (
-                                                )
-
-                                            [libs:protected] => 
-                                            [models] => 
-                                        )
-
-                                    [Uri] => Uri Object
-                                        (
-                                            [uriArray] => Array
-                                                (
-                                                    [0] => projects
-                                                    [1] => 1
-                                                )
-
-                                            [queryString] => 
-                                            [match] => 
-                                            [defaultPart] => 
-                                            [controller] => Main Object
- *RECURSION*
-                                            [domain] => localhost
-                                            [request] => projects/1
-                                            [contorllerFile] => Main.php
-                                            [count] => 0
-                                            [contorller] => 
-                                            [libs:protected] => stdClass Object
-                                                (
-                                                    [Config] => Config Object
-                                                        (
-                                                            [configs:Config:private] => Array
-                                                                (
-                                                                    [Debug] => Array
-                                                                        (
-                                                                            [debug] => 1
-                                                                            [warnings] => 1
-                                                                            [logfile] => /Users/ajcates/Sites/projects/sweet-framework/sweet-framework/logs/main.log
-                                                                            [growl] => Array
-                                                                                (
-                                                                                    [host] => localhost
-                                                                                    [password] => 
-                                                                                )
-
-                                                                        )
-
-                                                                    [SweetFramework] => Array
-                                                                        (
-                                                                            [benchMark] => 
-                                                                            [niceUrls] => 
-                                                                            [app] => Array
-                                                                                (
-                                                                                    [folder] => app
-                                                                                    [paths] => Array
-                                                                                        (
-                                                                                            [config] => settings
-                                                                                            [lib] => libs
-                                                                                            [model] => models
-                                                                                            [helper] => helpers
-                                                                                            [controller] => controllers
-                                                                                        )
-
-                                                                                )
-
-                                                                        )
-
-                                                                    [site] => Array
-                                                                        (
-                                                                            [name] => Sweet-framework
-                                                                            [prettyUrls] => 
-                                                                            [url] => http://localhost/projects/sweet-framework/?
-                                                                            [database] => default
-                                                                            [theme] => default
-                                                                        )
-
-                                                                )
-
-                                                            [paths:Config:private] => Array
-                                                                (
-                                                                    [0] => /sweet-framework/settings/
-                                                                )
-
-                                                        )
-
-                                                )
-
-                                            [models] => 
-                                            [protocol] => http
-                                        )
-
-                                )
-
-                            [models] => 
-                        )
-
-                    [1] => __DudeWheresMyCar
-                )
-
-        )
-
+    [0] => <h2>Test</h2>
+<time>1276309293</time>
+<p>test project</p>
+    [1] => <h2>Other Project</h2>
+<time>1276309345</time>
+<p>just another project</p>
 )
 
 
 
-App | End: 0.00223994255066
+App | End: 0.00557398796082
 

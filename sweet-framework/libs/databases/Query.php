@@ -167,7 +167,7 @@ class Query extends App {
 	}
 
 	public function limit() {
-		$this->_limit = f_flatten(func_get_args());
+		$this->_limit = array_reverse(f_flatten(func_get_args()));
 		return $this;
 	}
 	

@@ -9,9 +9,7 @@
 		<? endif; ?>
 	</hgroup>
 	<? endif; ?>
-	<? if(isset($subtitle)): ?>
-	<nav>
-		<?=$nav?>
-	</nav>
+	<? if(isset($nav)): ?>
+	<?=$nav?>
 	<? endif; ?>
 </header>

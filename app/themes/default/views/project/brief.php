@@ -1,1 +1,1 @@
-<a href="<?=SITE_URL . 'projects/' . $project->id?>"><?=$project->name?></a>
+<a href="<?=SITE_URL . 'project/' . $project->id?>"><?=$project->name?></a>

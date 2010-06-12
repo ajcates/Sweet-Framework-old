@@ -24,6 +24,7 @@ Class Main extends App {
 		//Load a library.
 		//$this->lib('test/Test');
 		$this->lib(array('Template', 'Uri'));
+		$this->model('Projects');
 	}
 
 	function index() {
@@ -31,7 +32,7 @@ Class Main extends App {
 		//Write to the log.
 		//D::show();
 		
-		$this->model('Projects');
+		
 		
 		//D::show('hello world');
 		//Show somethign to the screen.
@@ -47,10 +48,17 @@ Class Main extends App {
 		$this->libs->Template->render('dashboard.php');
 		//
 	}
-	
+	function projects() {
+		$this->libs->Template->set(array(
+			'projects' => $this->models->Projects->all()
+		));
+		$this->libs->Template->render('projects.php');
+	}
 	function project() {
-		
-		$this->libs->Uri->get(1);
+		$this->libs->Template->set(array(
+			'project' => $this->models->Projects->get($this->libs->Uri->get(1))->one()
+		));
+		$this->libs->Template->render('project.php');
 	}
 	
 	function addProject() {

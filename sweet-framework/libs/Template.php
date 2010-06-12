@@ -20,11 +20,7 @@ class Template extends App {
 	
 	public function render($fileNameThatNoOneBetterUse) {
 		extract($this->data);
-		//APPLOC
-		//$this->lib('Theme')->
-		
-		include(T::$loc . '/templates/' . $fileNameThatNoOneBetterUse);
-		//include(LOC . $this->getLibrary('Config')->get('SweetFramework', 'theme') . '/templates/' . $fileNameThatNoOneBetterUse);
+		include(T::$loc . '/templates/' . SweetFramework::fileLoc($fileNameThatNoOneBetterUse));
 	}
 	
 	public function get($file=null) {

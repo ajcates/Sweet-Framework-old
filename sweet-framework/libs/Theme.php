@@ -2,7 +2,7 @@
 class M {
 	//short cuts for model access
 	public static function __callStatic($name, $arguments) {
-		return SweetFramework::getClass('model', App::className($name));
+		return SweetFramework::getClass('model', $name);
 	}
 }
 class T {
@@ -35,6 +35,7 @@ class B {
 		extract((array) f_first($values));
 		ob_start();
 		include(LOC . '/sweet-framework/blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
+		
 		return ob_get_clean();
 	}
 }

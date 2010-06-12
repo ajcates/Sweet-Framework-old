@@ -4,7 +4,8 @@
 	)),
 	'body' => B::body(array(
 		'header' => B::header(array(
-			'title' => 'Project - ' . $project->name
+			'title' => 'Project - ' . $project->name,
+			'nav' => T::get('site/nav')
 		)),
 		'content' => V::get('project/detail', array('project' => $project)),
 		'footer' => B::footer(array(

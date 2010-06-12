@@ -97,6 +97,7 @@ class SweetFramework extends App {
 		if(substr($name, -4) != '.php') {
 			$name .= '.php';
 		}
+		return $name;
 	}
 	
 	public static function loadFileType($type, $name) {

@@ -25,10 +25,22 @@ class Uri extends App {
 		$this->domain = $_SERVER['HTTP_HOST'];
 		//http or https?
 		$this->protocol = strtolower(strstr($_SERVER['SERVER_PROTOCOL'], '/', true));;
+		D::log($_SERVER, 'servar ');
+		//$_SERVER['REQUEST_URI']
+		//
 		
-		//$scriptLoc = substr($_SERVER['REQUEST_URI'], 0, -strlen($this->request));
+		D::log($this->request, 'request');
+		define('URL', $this->protocol . '://' . $this->domain . strstr($_SERVER['REQUEST_URI'] .'?', '?', true) );
+		/*
+if(!empty($this->request)) {
+			
+		} else {
+			define('URL', $this->protocol . '://' . $this->domain . $_SERVER['REQUEST_URI']);	
+		}
+*/
 		
-		define('URL', $this->protocol . '://' . $this->domain . $_SERVER['REQUEST_URI']);
+		D::log(URL, 'URL');
+		
 		
 		if($this->lib('Config')->get('site', 'prettyUrls')) {
 			define('SITE_URL', URL);
@@ -42,7 +54,7 @@ class Uri extends App {
 			$request = $this->getRequest();
 		}
 		//D::log($this->loadController(), 'controller funcj');
-		f_call(D::log($this->loadController(), 'controller func'));
+		f_call($this->loadController());
 	}
 	
 	
@@ -54,7 +66,6 @@ class Uri extends App {
 		if(isset($controller)) {
 			$this->contorllerFile = $controller;
 		}
-		D::log($this->controller, 'Loading Controller…');
 		$class = SweetFramework::className($this->contorllerFile);
 		
 		if(!SweetFramework::loadFileType('controller', $class)) {

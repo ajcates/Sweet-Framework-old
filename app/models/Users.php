@@ -1,7 +1,7 @@
 <?
-class Projects extends App {
+class Users extends App {
 
-	var $tableName = 'projects';
+	var $tableName = 'users';
 
 	function __construct() {
 		$this->lib(array('databases/Query'));
@@ -12,7 +12,7 @@ class Projects extends App {
 		if(is_numeric($id)) {
 			$this->libs->Query->where(array('id' => $id));
 		} else if(is_string($id)) {
-			$this->libs->Query->where(array('name' => $id));
+			$this->libs->Query->where(array('username' => $id));
 		} else if(is_array($id)) {
 			$this->libs->Query->where($id);
 			//$this->libs->Query->select('*')->from('projects')->limit($offset, $count)->results();
