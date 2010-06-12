@@ -1,16 +1,12 @@
 
-SweetFramework - June 12, 2010, 2:31 pm | App Started : 0
+SweetFramework - June 12, 2010, 2:33 pm | App Started : 0
 
 
 servar : Array
 (
     [HTTP_HOST] => localhost
-    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, like Gecko)
-    [HTTP_ACCEPT] => application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
-    [HTTP_ACCEPT_LANGUAGE] => en-us
-    [HTTP_ACCEPT_ENCODING] => gzip, deflate
-    [HTTP_COOKIE] => __utma=111872281.1802370866.1274891818.1274891818.1275541795.2; __utmz=111872281.1274891818.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
-    [HTTP_CONNECTION] => keep-alive
+    [HTTP_USER_AGENT] => ApacheBench/2.3
+    [HTTP_ACCEPT] => */*
     [PATH] => /usr/bin:/bin:/usr/sbin:/sbin
     [SERVER_SIGNATURE] => 
     [SERVER_SOFTWARE] => Apache
@@ -21,15 +17,15 @@ servar : Array
     [DOCUMENT_ROOT] => /Users/ajcates/Sites
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/ajcates/Sites/projects/sweet-framework/index.php
-    [REMOTE_PORT] => 55198
+    [REMOTE_PORT] => 57203
     [GATEWAY_INTERFACE] => CGI/1.1
-    [SERVER_PROTOCOL] => HTTP/1.1
+    [SERVER_PROTOCOL] => HTTP/1.0
     [REQUEST_METHOD] => GET
     [QUERY_STRING] => 
-    [REQUEST_URI] => /projects/sweet-framework/?
+    [REQUEST_URI] => /projects/sweet-framework/
     [SCRIPT_NAME] => /projects/sweet-framework/index.php
     [PHP_SELF] => /projects/sweet-framework/index.php
-    [REQUEST_TIME] => 1276378308
+    [REQUEST_TIME] => 1276378383
     [argv] => Array
         (
         )
@@ -153,5 +149,5 @@ tag: <footer><p>Copyright ajcates 2010</p></footer>
 tag: <body><header><h1>Dashboard</h1><nav /></header><section><h3>Projects</h3><ul><li><a href="http://localhost/projects/sweet-framework/?project/1">Test</a></li><li><a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a></li></ul></section><section><h3>Users</h3><ul><li><a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a></li></ul></section><footer><p>Copyright ajcates 2010</p></footer></body>
 
 
-App | End: 0.00838303565979
+App | End: 0.00874710083008
 
