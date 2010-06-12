@@ -110,6 +110,12 @@ class SweetFramework extends App {
 		return false;
 	}
 	
+	public static function loadClass($type, $name, $params=array()) {
+		self::loadFileType($type, $name);
+		$c = self::className($name);
+		return new $c($params);
+	}
+	
 	public static function getClass($type, $name, $params=array()) {
 		$cName = self::className($name);
 		if(!array_key_exists($type . $cName, self::$classes)) {

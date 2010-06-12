@@ -35,9 +35,12 @@ class Query extends App {
 		
 	public function __construct() {
 		//$this->getLibrary('Config');
+		$this->_driver = $this->lib('databases/Databases')->getCurrentDb();
+		
 	}
 	
 	public function connect($config=null) {
+		/*
 		if(!isset($config)) {
 			$config = $this->lib->Config->get('Site', 'database');
 		}
@@ -47,6 +50,7 @@ class Query extends App {
 		//@todo enable support for multiple drivers at one time
 		self::$_driver = $this->getLibrary('Databases/Drivers/' . $config['driver'] . '.php');
 		self::$_driver->connect($config);
+		*/
 	}
 	
 	function insert($values) {
@@ -317,10 +321,10 @@ class Query extends App {
 				if(!is_array(f_first($this->_insert) )) {
 					$this->_insert = array($this->_insert);
 				}
-				$cols = array_map(function($v) {return '[' . $v . ']';}, array_keys(array_reduce($this->_insert, 'array_merge_recursive', array())));
+				$cols = array_map(function($v) { return Query::nullEscape($v, '`');}, array_keys(array_reduce($this->_insert, 'array_merge_recursive', array())));
 				
 				
-				$sqlString = 'INSERT INTO ' . f_first(Query::$_fromValue) . ' (' . join(', ', $cols) . ') VALUES ' . join(', ', f_map(
+				$sqlString = 'INSERT INTO ' . f_first((array) Query::$_fromValue) . ' (' . join(', ', $cols) . ') VALUES ' . join(', ', f_map(
 					function($v) use($cols) {
 						return '(' . join(',', f_map(
 							function ($i) use ($v) {
@@ -348,42 +352,28 @@ class Query extends App {
 	
 	public function go() {
 		self::$last = $this->_build();
-		if(!self::$_driver->query(self::$last)) {
+		if(!$this->_driver->query(self::$last)) {
 			return false;
 		}
 		return $this;
-		
-		if(!isset($sql)) {
-			$sql = $this->_build();
-		}
-		$this->whereGroups = null;
-		// echo "\nSQL:\n" . $sql . "\n"; 
-//		D::log($sql, 'Sql call');
-//		$this->clear();
-		return Databases::f('query', array($sql, 'raw'));
 	}
 	
 	public function results($type='object') {
-		if(!isset($sql)) {
-			$sql = $this->_build();
-		}
-		
-//		$this->clear();
-		/* echo "\nSQL:\n" . $sql . "\n"; */
-		return Databases::f('query', array($sql, $type));
+		self::$last = $this->_build();
+		return $this->_driver->query(self::$last, $type);
 	}
 	
 	public function getDriver() {
-		return self::$_driver;
+		return $this->_driver;
 	}
-	public static function nullEscape($var) {
+	public static function nullEscape($var, $sep="'") {
 		if(!isset($var)) {
 			return 'null';
 		}
 		if(is_bool($var) || is_int($var)) {
 			return $var;
 		}
-		return "'" . self::escape($var) . "'";
+		return $sep . self::escape($var) . $sep;
 	}
 	
 	public static function escape($var) {

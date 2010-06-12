@@ -7,47 +7,52 @@ new idea you have Databases object which holds differnt database objects, this a
 
 */
 //Note that this class doesn't seem to do all that much, it does.
-class Databases {
+class Databases extends App {
 	
-	protected static $databases;
-	protected static $currentDatabase;
+	protected $databases = array();
+	protected $currentDatabase;
 	
 	function __construct() {
-		Config::loadSettings('Databases.php');
+		if($defaultDb = $this->lib('Config')->get('site', 'database')) {
+			$this->newDb($defaultDb);
+		}
 	}
 	
-	static function f($funcName, $args=array()) {
+	public function f($funcName, $args=array()) {
 		D::log(self::getCurrentDb(), 'current db');
 		return self::callFuncOnDb(self::getCurrentDb(), $funcName, $args);
 	}
 	
-	static function newDatabase($name) {
-		if(self::$databases === NULL) {
-			self::$databases = array();
-		}
-		$database = Config::getSetting('Databases', $name);
+	public function newDb($name) {
 		
-		
+		$database = $this->libs->Config->get('databases', $name);
 		//Sweetframework::getClass('lib', 'databases/drivers/' . $database['driver'],  );
-		
 		//App::includeLibrary('Databases/Drivers/' . $database['driver'] . '.php');
-		self::$databases[$name] = new $database['driver']($database);
+		
+		
+		
+		$this->setCurrentDb($name);
+		
+		$this->databases[$name] = Sweetframework::loadClass('lib', 'databases/drivers/' . $database['driver'],  $database);     //new $database['driver']($database);
+		if(!$this->databases[$name]->connect()) {
+			D::warn('failed to connect to the db');
+		}
 	}
 	
-	static function callFuncOnDb($dbname, $funcName, $args=array()) {
+	public function callFuncOnDb($dbname, $funcName, $args=array()) {
 		//print_r(self::$databases[$dbname]);
-		return call_user_func_array(array(self::$databases[$dbname], $funcName), $args);
+		return call_user_func_array(array($this->databases[$dbname], $funcName), $args);
 	}
 	
-	static function setCurrentDb($dbname) {
-		self::$currentDatabase = $dbname;
+	public function setCurrentDb($dbname) {
+		$this->currentDatabase = $dbname;
 	}
 	
-	static function getCurrentDb() {
-		return self::$currentDatabase;
+	public function getCurrentDb() {
+		return $this->databases[$this->currentDatabase];
 	}
 	
-	static function getDbVar($dbname, $varName) {
-		return self::$databases[$name]->$varName;
+	public function getDbVar($dbname, $varName) {
+		return $this->databases[$name]->$varName;
 	}
 }

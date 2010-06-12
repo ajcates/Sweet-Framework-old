@@ -30,12 +30,16 @@ class My_SQL {
 	
 	var $connected = false;
 	
-	function __construct() {
+	function __construct($settings) {
+		$this->settings = $settings;
 	}
 	
-	function connect($settings) {
+	function connect($settings=null) {
 		//print_r($settings);
-		$this->settings = $settings;
+		if(isset($settings)) {
+			$this->settings = $settings;
+		}
+	//	D::show($this->settings, 'newDB');
 		//connects using our settings
 		
 /* 	@todo make the @ be able to be turned on and off by debug mode	 */
@@ -63,7 +67,7 @@ class My_SQL {
 		return $value . ' w00t, db data from any where using any kind of driver.';
 	}
 	
-	function query($sql, $returnType) {
+	function query($sql, $returnType='null') {
 		if($this->prepared == false) {
 			$this->prepare($sql);
 		}
@@ -110,28 +114,10 @@ get rid of this switch and use an array of functions instead.
 			default:
 				return true;
 		}
-		
-		
-		
-		
-		
-		
-		
-//		switch ($returnType){
-//			case 'object':
-//				return $this->result->fetch_object();
-//			case 'assoc':
-//				return $this->result->fetch_assoc();
-//			case 'raw':
-//				return $this->result;
-//			default:
-//				return true;
-//		}
-		
-		
 	}
 	
 	function results($sql) {
+		//@todo figure wtf this is
 		return $this->query($sql);
 	}
 	
