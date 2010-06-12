@@ -1,3 +1,5 @@
-<?=$header?>
-<?=$content?>
-<?=$footer?>
+<body>
+	<?=$header?>
+	<?=join((array) $content)?>
+	<?=$footer?>
+</body>

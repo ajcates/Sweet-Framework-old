@@ -22,22 +22,34 @@ Class Main extends App {
 		 */
 		 
 		//Load a library.
-		$this->lib('test/Test');
+		//$this->lib('test/Test');
+		$this->lib('Template');
 	}
 
 	function index() {
 	
 		//Write to the log.
-		D::log('Hello World');
-		
+		//D::show();
 		
 		$this->model('Projects');
 		
-		
+		//D::show('hello world');
 		//Show somethign to the screen.
-		D::show($this->models->Projects->get(), 'Some Projects');
+		//D::show(, 'Some Projects');
 		
-		//$this->template->render('default.php');
+		
+		
+		$this->libs->Template->set(array(
+			'projects' => $this->models->Projects->get()
+		));
+
+		
+		$this->libs->Template->render('default.php');
+		//
+	}
+	
+	function project() {
+		//$this->libs->
 	}
 	
 	function addProject() {

@@ -2,7 +2,7 @@
 class M {
 	//short cuts for model access
 	public static function __callStatic($name, $arguments) {
-		return SweetFramework::returnModel(App::className($name));
+		return SweetFramework::getClass('model', App::className($name));
 	}
 }
 class T {
@@ -10,10 +10,10 @@ class T {
 	static $url;
 	static $loc;
 	public static function get($name, $arguments=array()) {
-		return SweetFramework::returnLibrary('Template')->get($name);
+		return SweetFramework::getClass('lib', 'Template')->get($name);
 	}
 	public static function __callStatic($name, $arguments=array()) {
-		return SweetFramework::returnLibrary('Template')->$name;
+		return SweetFramework::getClass('lib', 'Template')->$name;
 	}
 }
 class V {
@@ -25,7 +25,7 @@ class V {
 		return ob_get_clean();
 	}
 	public static function __callStatic($varName, $values=array()) {
-		return SweetFramework::returnLibrary('Template')->$varName;
+		return SweetFramework::getClass('lib', 'Template')->$varName;
 		//f_call(array(, 'get'), $args)
 	}
 }
@@ -34,7 +34,7 @@ class B {
 	public static function __callStatic($reallyHopeNoOneNamesThereVaribleThis, $values=array()) {
 		extract((array) f_first($values));
 		ob_start();
-		include(LOC . 'blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
+		include(LOC . '/sweet-framework/blocks/' . $reallyHopeNoOneNamesThereVaribleThis . '.php' );
 		return ob_get_clean();
 	}
 }
