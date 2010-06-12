@@ -1,5 +1,5 @@
 <?php
-SweetFramework::loadClass('lib', 'Config')->setAll('SweetFramework', array(
+SweetFramework::getClass('lib', 'Config')->setAll('SweetFramework', array(
 	'benchMark' => false,
 	'niceUrls' => false,
 	'app' => array(

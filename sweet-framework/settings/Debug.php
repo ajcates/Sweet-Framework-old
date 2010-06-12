@@ -1,5 +1,5 @@
 <?
-SweetFramework::loadClass('lib', 'Config')->setAll('Debug', array(
+SweetFramework::getClass('lib', 'Config')->setAll('Debug', array(
 	'debug' => true,
 	'warnings' => true,
 	'logfile' => LOC . '/sweet-framework/logs/main.log',

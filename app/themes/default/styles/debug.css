@@ -1,0 +1,5 @@
+/* Find all links where an href is not provided */
+html body a:not([href]), html body a[href='']  { background: red !important;}
+
+/* Find all links where the href = # */
+html body a[href='#'] { background: yellow !important;}

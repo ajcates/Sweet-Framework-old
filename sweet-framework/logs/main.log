@@ -1,5 +1,5 @@
 
-SweetFramework - June 9, 2010, 11:50 pm | App Started : 0
+SweetFramework - June 11, 2010, 5:04 pm | App Started : 0
 
 
 new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
@@ -22,8 +22,15 @@ Initing Controller…: Array
 
 
 
-: index func
+Hello World
 
 
-App | End: 0.0322060585022
+Tests: Array
+(
+    [0] => one
+)
+
+
+
+App | End: 0.0166630744934
 

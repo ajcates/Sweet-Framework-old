@@ -10,14 +10,14 @@ Class App {
 		if(is_array($lib)) {
 			return f_last(array_map(f_callable(array($this, 'lib')), $lib));
 		}
-		return $this->libs->{SweetFramework::className($lib)} = SweetFramework::loadClass('lib', $lib);
+		return $this->libs->{SweetFramework::className($lib)} = SweetFramework::getClass('lib', $lib);
 	}
 	
 	function model($model) {
 		if(is_array($model)) {
 			return f_last(array_map(f_callable(array($this, 'model')), $model));
 		}
-		return $this->models->{SweetFramework::className($model)} = SweetFramework::loadClass('model', $model);
+		return $this->models->{SweetFramework::className($model)} = SweetFramework::getClass('model', $model);
 	}
 	
 	function helper($helper) {

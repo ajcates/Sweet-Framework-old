@@ -10,5 +10,5 @@ $config['default']['databaseName'] = '';
 $config['crad-db']['driver'] = 'My_SQL';
 $config['crad-db']['host'] = 'localhost';
 $config['crad-db']['username'] = 'root';
-$config['crad-db']['password'] = 'dworkram';
+$config['crad-db']['password'] = '';
 $config['crad-db']['databaseName'] = 'sweet-framework';
