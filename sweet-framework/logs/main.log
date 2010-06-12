@@ -1,12 +1,14 @@
 
-SweetFramework - June 12, 2010, 1:27 pm | App Started : 0
+SweetFramework - June 12, 2010, 2:37 pm | App Started : 0
 
 
 servar : Array
 (
     [HTTP_HOST] => localhost
-    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/533.16 (KHTML, like Gecko)
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_3; en-us) AppleWebKit/534.1+ (KHTML, like Gecko) Version/5.0 Safari/533.16
     [HTTP_ACCEPT] => application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5
+    [HTTP_REFERER] => http://localhost/projects/
+    [HTTP_CACHE_CONTROL] => max-age=0
     [HTTP_ACCEPT_LANGUAGE] => en-us
     [HTTP_ACCEPT_ENCODING] => gzip, deflate
     [HTTP_COOKIE] => __utma=111872281.1802370866.1274891818.1274891818.1275541795.2; __utmz=111872281.1274891818.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none)
@@ -21,26 +23,25 @@ servar : Array
     [DOCUMENT_ROOT] => /Users/ajcates/Sites
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/ajcates/Sites/projects/sweet-framework/index.php
-    [REMOTE_PORT] => 54113
+    [REMOTE_PORT] => 59256
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.1
     [REQUEST_METHOD] => GET
-    [QUERY_STRING] => projects
-    [REQUEST_URI] => /projects/sweet-framework/?projects
+    [QUERY_STRING] => 
+    [REQUEST_URI] => /projects/sweet-framework/
     [SCRIPT_NAME] => /projects/sweet-framework/index.php
     [PHP_SELF] => /projects/sweet-framework/index.php
-    [REQUEST_TIME] => 1276374447
+    [REQUEST_TIME] => 1276378659
     [argv] => Array
         (
-            [0] => projects
         )
 
-    [argc] => 1
+    [argc] => 0
 )
 
 
 
-request: projects
+request: 
 
 
 URL: http://localhost/projects/sweet-framework/
@@ -51,14 +52,14 @@ new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
 
 uri array: Array
 (
-    [0] => projects
+    [0] => 
 )
 
 
 
 Initing Controller…: Array
 (
-    [0] => projects
+    [0] => 
 )
 
 
@@ -81,15 +82,33 @@ Sql call: SELECT *
 
 projects: Array
 (
-    [0] => <h2>Test</h2>
-<time>1276309293</time>
-<p>test project</p>
-    [1] => <h2>Other Project</h2>
-<time>1276309345</time>
-<p>just another project</p>
+    [0] => <a href="http://localhost/projects/sweet-framework/?project/1">Test</a>
+    [1] => <a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a>
 )
 
 
 
-App | End: 0.00750398635864
+hello
+
+
+SQL Build: SELECT *
+ FROM users
+
+ LIMIT 0, 10
+
+
+Sql call: SELECT *
+ FROM users
+
+ LIMIT 0, 10
+
+
+projects: Array
+(
+    [0] => <a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a>
+)
+
+
+
+App | End: 0.00778198242188
 
