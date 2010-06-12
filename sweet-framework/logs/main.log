@@ -1,5 +1,5 @@
 
-SweetFramework - June 12, 2010, 10:28 am | App Started : 0
+SweetFramework - June 12, 2010, 10:59 am | App Started : 0
 
 
 new Place: /Users/ajcates/Sites/projects/sweet-framework/app/themes/default
@@ -24,5 +24,120 @@ Initing Controller…: Array
 
 
 
-App | End: 0.00196194648743
+controller func: Closure Object
+(
+    [static] => Array
+        (
+            [func] => Array
+                (
+                    [0] => Main Object
+                        (
+                            [libs:protected] => stdClass Object
+                                (
+                                    [Template] => Template Object
+                                        (
+                                            [data:Template:private] => Array
+                                                (
+                                                )
+
+                                            [libs:protected] => 
+                                            [models] => 
+                                        )
+
+                                    [Uri] => Uri Object
+                                        (
+                                            [uriArray] => Array
+                                                (
+                                                    [0] => projects
+                                                    [1] => 1
+                                                )
+
+                                            [queryString] => 
+                                            [match] => 
+                                            [defaultPart] => 
+                                            [controller] => Main Object
+ *RECURSION*
+                                            [domain] => localhost
+                                            [request] => projects/1
+                                            [contorllerFile] => Main.php
+                                            [count] => 0
+                                            [contorller] => 
+                                            [libs:protected] => stdClass Object
+                                                (
+                                                    [Config] => Config Object
+                                                        (
+                                                            [configs:Config:private] => Array
+                                                                (
+                                                                    [Debug] => Array
+                                                                        (
+                                                                            [debug] => 1
+                                                                            [warnings] => 1
+                                                                            [logfile] => /Users/ajcates/Sites/projects/sweet-framework/sweet-framework/logs/main.log
+                                                                            [growl] => Array
+                                                                                (
+                                                                                    [host] => localhost
+                                                                                    [password] => 
+                                                                                )
+
+                                                                        )
+
+                                                                    [SweetFramework] => Array
+                                                                        (
+                                                                            [benchMark] => 
+                                                                            [niceUrls] => 
+                                                                            [app] => Array
+                                                                                (
+                                                                                    [folder] => app
+                                                                                    [paths] => Array
+                                                                                        (
+                                                                                            [config] => settings
+                                                                                            [lib] => libs
+                                                                                            [model] => models
+                                                                                            [helper] => helpers
+                                                                                            [controller] => controllers
+                                                                                        )
+
+                                                                                )
+
+                                                                        )
+
+                                                                    [site] => Array
+                                                                        (
+                                                                            [name] => Sweet-framework
+                                                                            [prettyUrls] => 
+                                                                            [url] => http://localhost/projects/sweet-framework/?
+                                                                            [database] => default
+                                                                            [theme] => default
+                                                                        )
+
+                                                                )
+
+                                                            [paths:Config:private] => Array
+                                                                (
+                                                                    [0] => /sweet-framework/settings/
+                                                                )
+
+                                                        )
+
+                                                )
+
+                                            [models] => 
+                                            [protocol] => http
+                                        )
+
+                                )
+
+                            [models] => 
+                        )
+
+                    [1] => __DudeWheresMyCar
+                )
+
+        )
+
+)
+
+
+
+App | End: 0.00223994255066
 

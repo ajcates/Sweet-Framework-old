@@ -50,7 +50,7 @@ Class Main extends App {
 	
 	function project() {
 		
-		$this->libs->Uri->getPart(2);
+		$this->libs->Uri->get(1);
 	}
 	
 	function addProject() {
@@ -73,5 +73,9 @@ Class Main extends App {
 		))->into('projects')->go();
 		*/
 		
+	}
+	function __DudeWheresMyCar() {
+		header('HTTP/1.0 404 Not Found');
+		echo 'Dude where\'s my car?';
 	}
 }

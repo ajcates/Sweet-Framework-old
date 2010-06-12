@@ -41,7 +41,8 @@ class Uri extends App {
 		if(!isset($request)) {
 			$request = $this->getRequest();
 		}
-		f_call($this->loadController());
+		//D::log($this->loadController(), 'controller funcj');
+		f_call(D::log($this->loadController(), 'controller func'));
 	}
 	
 	
@@ -86,14 +87,19 @@ class Uri extends App {
 					$this->controller,
 					$page[$this->count]
 				));
-			} else {
-				return f_function(function() {
-					header("HTTP/1.0 404 Not Found");
-					echo '<h1>404 error</h1>'; //todo check for some sort of custom 404…
-					return false;
-				});				
 			}
 		}
+		if(method_exists($class, '__DudeWheresMyCar')) {
+			return f_callable(array(
+				$this->controller,
+				'__DudeWheresMyCar'
+			));
+		}
+		return function() {
+			header("HTTP/1.0 404 Not Found");
+			echo '<h1>404 error</h1>'; //todo check for some sort of custom 404…
+			return false;
+		};
 	}
 	
 	
