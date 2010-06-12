@@ -50,7 +50,8 @@ class B {
 		return ob_get_clean();
 	}
 	
-	public static function __callStatic($tagName, $values=array(), $childern) {
+	public static function __callStatic($tagName, $values=array()) {
+		$childern = f_filter('is_string', f_rest(func_get_args()));
 		if(is_array($values[0])) {
 			$attributes = join(' ', f_keyMap(
 				function($v, $k) {
