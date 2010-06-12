@@ -1,5 +1,5 @@
 
-SweetFramework - June 12, 2010, 2:33 pm | App Started : 0
+SweetFramework - June 12, 2010, 2:52 pm | App Started : 0
 
 
 servar : Array
@@ -17,7 +17,7 @@ servar : Array
     [DOCUMENT_ROOT] => /Users/ajcates/Sites
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/ajcates/Sites/projects/sweet-framework/index.php
-    [REMOTE_PORT] => 57203
+    [REMOTE_PORT] => 62538
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.0
     [REQUEST_METHOD] => GET
@@ -25,7 +25,7 @@ servar : Array
     [REQUEST_URI] => /projects/sweet-framework/
     [SCRIPT_NAME] => /projects/sweet-framework/index.php
     [PHP_SELF] => /projects/sweet-framework/index.php
-    [REQUEST_TIME] => 1276378383
+    [REQUEST_TIME] => 1276379530
     [argv] => Array
         (
         )
@@ -74,48 +74,6 @@ Sql call: SELECT *
 
 
 
-tag: <title>SweetFramework Project Test</title>
-
-
-tag: <head><title>SweetFramework Project Test</title></head>
-
-
-tag: <h1>Dashboard</h1>
-
-
-tag: <a  />
-
-
-tag: <a  />
-
-
-tag: <ul />
-
-
-tag: <nav />
-
-
-tag: <header><h1>Dashboard</h1><nav /></header>
-
-
-tag: <h3>Projects</h3>
-
-
-tag: <li><a href="http://localhost/projects/sweet-framework/?project/1">Test</a></li>
-
-
-tag: <li><a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a></li>
-
-
-tag: <ul><li><a href="http://localhost/projects/sweet-framework/?project/1">Test</a></li><li><a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a></li></ul>
-
-
-tag: <section><h3>Projects</h3><ul><li><a href="http://localhost/projects/sweet-framework/?project/1">Test</a></li><li><a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a></li></ul></section>
-
-
-tag: <h3>Users</h3>
-
-
 hello
 
 
@@ -131,23 +89,5 @@ Sql call: SELECT *
  LIMIT 0, 10
 
 
-tag: <li><a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a></li>
-
-
-tag: <ul><li><a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a></li></ul>
-
-
-tag: <section><h3>Users</h3><ul><li><a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a></li></ul></section>
-
-
-tag: <p>Copyright ajcates 2010</p>
-
-
-tag: <footer><p>Copyright ajcates 2010</p></footer>
-
-
-tag: <body><header><h1>Dashboard</h1><nav /></header><section><h3>Projects</h3><ul><li><a href="http://localhost/projects/sweet-framework/?project/1">Test</a></li><li><a href="http://localhost/projects/sweet-framework/?project/2">Other Project</a></li></ul></section><section><h3>Users</h3><ul><li><a href="http://localhost/projects/sweet-framework/?user/1">A.J. Cates - ajcates</a></li></ul></section><footer><p>Copyright ajcates 2010</p></footer></body>
-
-
-App | End: 0.00874710083008
+App | End: 0.00434517860413
 

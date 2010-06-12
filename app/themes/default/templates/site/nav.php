@@ -1,14 +1,10 @@
-<?=B::nav(array(
-	'text' => B::ul(array(
-		'items' => array(
-			B::a(array(
-				'text' => 'Dashboard',
-				'href' => URL
-			)),
-			B::a(array(
-				'text' => 'Projects',
-				'href' => SITE_URL . 'projects'
-			))
-		)
+<?=B::nav(B::ul(
+	B::li(B::a(
+		array('href' => URL),
+		'Dashboard'
+	)),
+	B::li(B::a(
+		array('href' => SITE_URL . 'projects'),
+		'Projects'
 	))
 ));

@@ -51,10 +51,12 @@ class B {
 	}
 	
 	public static function __callStatic($tagName, $values=array()) {
+		
 		if(is_array($values[0])) {
+			//D::log($values[0], '0 values');
 			$attributes = ' ' . join(' ', f_keyMap(
 				function($v, $k) {
-					$k . '="' . join(', ', (array)$v)  . '"';
+					return $k . '="' . join(', ', (array)$v)  . '"';
 				},
 				$values[0]
 			));
@@ -64,9 +66,9 @@ class B {
 			$childern =& $values;
 		}
 		if(empty($childern) && $tagName != 'script') {
-			return D::log('<' . $tagName . $attributes . '/>', 'tag');
+			return '<' . $tagName . $attributes . '/>';
 		} else {
-			return D::log('<' . $tagName . $attributes . '>' . join((array)$childern) . '</' . $tagName . '>', 'tag');
+			return '<' . $tagName . $attributes . '>' . join((array)$childern) . '</' . $tagName . '>';
 		}
 	}
 }
