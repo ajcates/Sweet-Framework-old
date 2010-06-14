@@ -42,10 +42,17 @@ Class Users extends App {
 		$this->lib('Session');
 		
 		if(isset($_POST['username']) && isset($_POST['password']) && $this->models->User->logIn($_POST['username'], $_POST['password'])) {
+			//D::show('we good');
 			$this->libs->Session->flash('loginFail', false);
 		} else {
+			//D::show('fail');
 			$this->libs->Session->flash('loginFail', true);
 		}
+		$this->libs->Uri->redirect('/');
+	}
+	
+	function logout() {
+		$this->lib('Session')->destroy();
 		$this->libs->Uri->redirect('/');
 	}
 	

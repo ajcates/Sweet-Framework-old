@@ -115,9 +115,10 @@ class SweetFramework extends App {
 	 * @return void
 	 */
 	static function end() {
-		if(isset(self::$sweetLibs['Session'] )) {
+		if(isset(self::$classes['libSession'] )) {
+		
 			//@todo make this more module and not so HARDcoded. :)
-			self::$sweetLibs['Session']->save();
+			self::$classes['libSession']->save();
 		}
 		D::time('App', 'End');
 		D::close();

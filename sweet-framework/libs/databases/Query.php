@@ -350,7 +350,6 @@ class Query extends App {
 				break;
 		}
 		$this->sql = $sqlString;
-		D::log($this->sql, 'SQL Build');
 		return $this->sql;
 	}
 	

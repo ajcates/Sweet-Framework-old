@@ -56,7 +56,7 @@ class Session extends App {
 					$this->_valid = true;
 					$this->_id = $row->id;
 					$this->loadData($this->libs->Query->select('*')->from($this->libs->Config->get('Session', 'dataTableName'))->where(array('session' => $this->_id))->results());
-					D::log($this->_data, '_data');
+					D::log($this->_data, 'cookie is good.');
 					return true;
 				}
 			}
@@ -98,7 +98,7 @@ class Session extends App {
 	}
 	
 	function data($key, $value=null) {
-		if($this->checkCookie()) {
+		//if($this->checkCookie()) {
 			if(!isset($value)) {
 				return @$this->_data[$key];
 			}
@@ -114,11 +114,11 @@ class Session extends App {
 				$this->_new[] = $key;
 			}
 			$this->_data[$key] = $value;
-		}
+		//}
 	}
 	
 	function flash($key, $value=null) {
-		if($this->checkCookie()) {
+		//if($this->checkCookie()) {
 			if(!isset($value)) {
 				return @$this->_flash[$key];
 			}
@@ -130,11 +130,13 @@ class Session extends App {
 			}
 			$this->_flash[$key] = $value;
 			$this->libs->Query->insert(array('name' => $key, 'value' => $this->_flash[$key], 'session' => $this->_id, 'flash' => 1))->into($this->libs->Config->get('Session', 'dataTableName'))->go();
-		}
+		//}
 	}
 	
 	function save() {
-		if($this->checkCookie()) {
+		D::log('saving session');
+	//	if($this->checkCookie()) {
+			D::log($this->_data, 'data');
 			foreach($this->_changed as $key) {
 				$this->libs->Query->update($this->libs->Config->get('Session', 'dataTableName'))->where(array('name' => $key, 'session' => $this->_id))->set(array('value' => $this->_data[$key]))->go();
 			}
@@ -144,10 +146,10 @@ class Session extends App {
 			if(!empty($this->_flashRemove)) {
 				$this->libs->Query->delete()->where(array('name' => $this->_flashRemove, 'session' => $this->_id, 'flash' => 1))->from($this->libs->Config->get('Session', 'dataTableName'))->go();
 			}
-		}
+	//	}
 	}
 	
-	function destory() {
+	function destroy() {
 		setcookie ($this->libs->Config->get('Session', 'cookieName'), '', time() - 86400);
 		$this->libs->Query->delete()->where(array('id' => $this->_id))->from($this->libs->Config->get('Session', 'tableName'))->go();
 	}
