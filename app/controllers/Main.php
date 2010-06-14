@@ -40,7 +40,7 @@ Class Main extends App {
 		//Show somethign to the screen.
 		//D::show(, 'Some Projects');
 		
-		D::log($this->models->User->loggedIn());
+		D::log($this->models->User->loggedIn(), 'is logged in');
 		
 		$this->libs->Template->set(array(
 			'projects' => $this->models->Projects->all()
