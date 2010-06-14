@@ -16,7 +16,7 @@ class Session extends App {
 	private $_flash = array();
 	
 	function __construct() {
-		$this->lib(array('Config', 'Query'));
+		$this->lib(array('Config', 'databases/Query'));
 		
 		//$this->libs->Config->get('Session', 'sessionTableName')
 		
@@ -50,12 +50,12 @@ class Session extends App {
 		if(isset($_COOKIE[$cookieName])) {
 			//D::log($_COOKIE[$cookieName], 'Cookie Set');
 			$cookie = explode('_', $_COOKIE[$cookieName]);
-			$row = f_first($this->query->select('*')->from($this->libs->Config->get('Session', 'tableName'))->where(array('id' => f_first($cookie)))->results());
+			$row = f_first($this->libs->Query->select('*')->from($this->libs->Config->get('Session', 'tableName'))->where(array('id' => f_first($cookie)))->results());
 			if(!empty($row) && $this->encryptCheckString($row->uid) === f_last($cookie)) {
 				if($this->encryptCheckString($this->getCheckString($row->uid)) === $row->checkString) {
 					$this->_valid = true;
 					$this->_id = $row->id;
-					$this->loadData($this->query->select('*')->from($this->libs->Config->get('Session', 'dataTableName'))->where(array('session' => $this->_id))->results());
+					$this->loadData($this->libs->Query->select('*')->from($this->libs->Config->get('Session', 'dataTableName'))->where(array('session' => $this->_id))->results());
 					D::log($this->_data, '_data');
 					return true;
 				}
@@ -83,11 +83,11 @@ class Session extends App {
 	
 	function generateCookie($checkString, $uid) {
 		//@todo remove the mssql depencdy here.
-		return f_first(f_first( $this->query->insert(array(
+		return f_first(f_first( $this->libs->Query->insert(array(
 			'checkString' => $this->encryptCheckString($checkString),
 			'created' => time(),
 			'uid' => $uid
-		))->into($this->libs->Config->get('Session', 'tableName'))->go()->getDriver()->query('SELECT max(@@IDENTITY) AS \'id\' FROM ' . $this->libs->Config->get('Session', 'tableName'))->get('assoc') )) . '_' . $this->encryptCheckString($uid);
+		))->into($this->libs->Config->get('Session', 'tableName'))->go()->getDriver()->query('SELECT max(@@IDENTITY) AS \'id\' FROM ' . $this->libs->Config->get('Session', 'tableName'), 'assoc') )) . '_' . $this->encryptCheckString($uid);
 	}
 	
 	function saveCookie($info) {
@@ -129,26 +129,26 @@ class Session extends App {
 				return $this->flash(f_last($key));
 			}
 			$this->_flash[$key] = $value;
-			$this->query->insert(array('name' => $key, 'value' => $this->_flash[$key], 'session' => $this->_id, 'flash' => 1))->into($this->libs->Config->get('Session', 'dataTableName'))->go();
+			$this->libs->Query->insert(array('name' => $key, 'value' => $this->_flash[$key], 'session' => $this->_id, 'flash' => 1))->into($this->libs->Config->get('Session', 'dataTableName'))->go();
 		}
 	}
 	
 	function save() {
 		if($this->checkCookie()) {
 			foreach($this->_changed as $key) {
-				$this->query->update($this->libs->Config->get('Session', 'dataTableName'))->where(array('name' => $key, 'session' => $this->_id))->set(array('value' => $this->_data[$key]))->go();
+				$this->libs->Query->update($this->libs->Config->get('Session', 'dataTableName'))->where(array('name' => $key, 'session' => $this->_id))->set(array('value' => $this->_data[$key]))->go();
 			}
 			foreach($this->_new as $key) {
-				$this->query->insert(array('name' => $key, 'value' => $this->_data[$key], 'session' => $this->_id))->into($this->libs->Config->get('Session', 'dataTableName'))->go();
+				$this->libs->Query->insert(array('name' => $key, 'value' => $this->_data[$key], 'session' => $this->_id))->into($this->libs->Config->get('Session', 'dataTableName'))->go();
 			}
 			if(!empty($this->_flashRemove)) {
-				$this->query->delete()->where(array('name' => $this->_flashRemove, 'session' => $this->_id, 'flash' => 1))->from($this->libs->Config->get('Session', 'dataTableName'))->go();
+				$this->libs->Query->delete()->where(array('name' => $this->_flashRemove, 'session' => $this->_id, 'flash' => 1))->from($this->libs->Config->get('Session', 'dataTableName'))->go();
 			}
 		}
 	}
 	
 	function destory() {
 		setcookie ($this->libs->Config->get('Session', 'cookieName'), '', time() - 86400);
-		$this->query->delete()->where(array('id' => $this->_id))->from($this->libs->Config->get('Session', 'tableName'))->go();
+		$this->libs->Query->delete()->where(array('id' => $this->_id))->from($this->libs->Config->get('Session', 'tableName'))->go();
 	}
 }

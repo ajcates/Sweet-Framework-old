@@ -1,6 +1,6 @@
 <?=B::form(
 	array(
-		'action' => SITE_URL . 'login',
+		'action' => SITE_URL . 'users/dologin',
 		'method' => 'POST'
 	),
 	B::h3('Login'),
@@ -11,6 +11,7 @@
 			'name' => 'username'
 		)
 	),
+	B::br(),
 	B::label('Password:'),
 	B::input(
 		array(

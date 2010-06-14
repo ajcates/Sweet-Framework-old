@@ -23,7 +23,7 @@
 				function($v) {
 					return B::li(V::get('users/brief', array('user' => $v)));
 				},
-				M::Users()->limit(10)->all()
+				M::User()->limit(10)->all()
 			)))
 		),
 		B::footer(

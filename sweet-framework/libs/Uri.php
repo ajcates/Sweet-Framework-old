@@ -222,5 +222,16 @@ if(!empty($this->request)) {
 	function getArray() {
 		return $this->uriArray;
 	}
+	
+	function redirect($uri = '', $http_response_code = 302) {
+		if(substr($uri, 0, 7) != 'http://') {
+			//@todo fix this so it works with https
+			$uri = SITE_URL . $uri;
+		}
+		//@todo make this be set off with the debug switch. and if debugging is on it should show a link to the page it would have forwarded to.
+ 		header("Location: " . $uri, TRUE, $http_response_code);
+		/* @todo you should call an app end event here.*/
+		SweetFramework::end();
+	}	
 }
 ?>

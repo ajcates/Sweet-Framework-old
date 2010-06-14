@@ -19,53 +19,26 @@ class SweetFramework extends App {
 		//crap we need for the framework
 		$GLOBALS['app'] = $this; //stop this.
 		$this->helper('functional'); //makes my life oh so much easier :)
-		$this->lib(array('D', 'Config'));
-		D::initialize($this->libs->Config->get('Debug'));
-		D::time('App', 'SweetFramework - ' . date("F j, Y, g:i a"));
+		$this->lib(array('D', 'Config')); //Get the debuger and the config loader
+		D::initialize($this->libs->Config->get('Debug')); //start the debugger up with some config options
+		D::time('App', 'SweetFramework - ' . date("F j, Y, g:i a")); //Write what time the app starts to the log
 		
-		$appInfo = $this->libs->Config->get('SweetFramework', 'app');
-		
-		
-		//define('APPLOC', LOC . $appInfo['folder']);
+		$appInfo = $this->libs->Config->get('SweetFramework', 'app'); //get the current app's settings
 		
 		foreach($appInfo['paths'] as $k => $v) {
 			if(!is_array(self::$paths[$k])) {
 				self::$paths[$k] = array();
 			}
-			//@todo A/B test these two.
+			//add in the applications folders to the frameworks file loader
 			self::$paths[$k][] = '/' . $appInfo['folder'] . '/' . $v .'/';
-			//self::$paths[$k][] = join('/', array(LOC, $appInfo['folder'], $v)) .'/';
+			//self::$paths[$k][] = join('/', array(LOC, $appInfo['folder'], $v)) .'/'; @todo A/B test these two.
 		}
-
-		/*
-		$db = $this->config->get('Site', 'database');
-		Databases::newDatabase($db);
-		Databases::setCurrentDb($db);
-		*/
 		
-		//Handy stuff that is always used
-//		$this->includeLibrary('Session.php');
-//		$this->includeLibrary('SweetModel.php');
 		$this->lib(array('Uri', 'Theme'));
-		
 
 		$this->libs->Uri->callRoute();
-		
-		//Check for theme and go!
-		/*
-		if(!$this->lib->Theme->setTheme($this->config->get('Site', 'defaultTheme'))) {
-			D::error('Theme could not be found. Debug: $Config->getSetting(\'Site\', \'defaultTheme\') = ' . $this->config->get('Site', 'defaultTheme'));
-		}
-		*/
-		
-		
-		//$this->loadController('Main.php'); //this is where it starts to get interesting…
 		self::end();
-		//after we are done.
-		//Session::writeData();
-		
 	}
-	/////
 	
 	static protected $paths = array(
 		'lib' => array('/sweet-framework/libs/'),
@@ -92,7 +65,6 @@ class SweetFramework extends App {
 		return false;
 	}
 	
-	
 	public static function fileLoc($name) {
 		if(substr($name, -4) != '.php') {
 			$name .= '.php';
@@ -102,7 +74,7 @@ class SweetFramework extends App {
 	
 	public static function loadFileType($type, $name) {
 		/*  @todo
-			- need to use a FileName function here
+			- need to use a FileName function here #Maybe
 		*/
 		//$loc = self::fileLoc($name);
 		foreach(self::$paths[$type] as $path) {
@@ -135,6 +107,13 @@ class SweetFramework extends App {
 		
 	static protected $sweetLibs = array();
 	
+	/**
+	 * end function. Shuts the party down.
+	 * 
+	 * @access public
+	 * @static
+	 * @return void
+	 */
 	static function end() {
 		if(isset(self::$sweetLibs['Session'] )) {
 			//@todo make this more module and not so HARDcoded. :)
@@ -144,63 +123,7 @@ class SweetFramework extends App {
 		D::close();
 		exit;
 	}
-		
-	function loadController($fileName, $part=0) {
-		D::log($fileName, 'Loading Controller…');
-		
-		//$fileName = Events::callEvent('loadController', $fileName);
-
-		require(LOC . 'Controllers/' . $fileName);
-		
-		//print_r($this);
-		static $partCount = 0;
-
-		$class = substr(strrchr('/' . $fileName, '/'), 1, -4);
-
-		$page = $this->lib->Uri->loadUrl($class::$urlPattern, $part);
-		
-		if(is_array(f_last($page))) {
-			if(is_array( f_first(f_last($page)) )) {
-				$this->loadController(f_first(f_first(f_last($page))), $part+1);
-				return true;
-			}
-			$page[$part] = f_first(f_last($page));
-			//D::log($page[$part], 'page o parts');
-		}
-
-
-		D::log($page, 'Loading Controller…');
-		$this->controller = new $class();
-		
-		$this->controller->getLibrary('Databases/Query.php');
-		
-		/*@todo make "shortcuts" more dynamic */
-		$this->controller->template =& $this->controller->lib->Template;
-		
-		if(empty($page[$part])) {
-			echo $this->controller->index();
-		} else {
-			if(method_exists($class, $page[$part])) {
-				echo f_call(array(
-					$this->controller,
-					$page[$part]
-				));
-				return true;
-			} else {
-				return f_function(function() {
-					header("HTTP/1.0 404 Not Found");
-					echo '<h1>404 error</h1>'; //todo check for some sort of custom 404…
-				});
-			}
-		}
-		D::log($page, 'controller method array');
-	}
-	
-	
-	
-	
-	
-	
+}
 /*
 Notes:
 	File load types:
@@ -236,21 +159,4 @@ Notes:
 		- Which then in theroy could use a basic include function
 			- Which uses a isFileReal function?
 
-
-
-
-
-
-
-
- 	 */
-	
-	
-	
-	
-	
-	
-	
-	
-	
-}
+*/

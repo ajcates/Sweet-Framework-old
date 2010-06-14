@@ -2,7 +2,9 @@
 
 Class Main extends App {
 
-	static $urlPattern = array();
+	static $urlPattern = array(
+		'/users.*/' => array('Users.php')
+	);
 
 	function __construct() {
 		//$this->lib(array('Template', 'databases/Query'));
@@ -24,7 +26,7 @@ Class Main extends App {
 		//Load a library.
 		//$this->lib('test/Test');
 		$this->lib(array('Template', 'Uri'));
-		$this->model('Projects');
+		$this->model(array('Projects', 'User'));
 	}
 
 	function index() {
@@ -38,7 +40,7 @@ Class Main extends App {
 		//Show somethign to the screen.
 		//D::show(, 'Some Projects');
 		
-		
+		D::log($this->models->User->loggedIn());
 		
 		$this->libs->Template->set(array(
 			'projects' => $this->models->Projects->all()

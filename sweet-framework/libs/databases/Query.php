@@ -258,7 +258,7 @@ class Query extends App {
 	
 	function _buildJoins() {
 	 	if(!empty($this->_joins)) {
-		 	return join(' ', f_map(
+		 	return "\n" . join(' ', f_map(
 		 		function($join) {
 		 	 	 	return join(' ', f_keyMap(
 						function($joinSets, $jTable) {
@@ -292,6 +292,7 @@ class Query extends App {
 	}
 	function _buildWhereString($values) {
 		if(empty($values)) {
+			D::log('empty where');
 			return '';
 		}
 		$whereContent = $this->_buildWhere($values);
@@ -307,7 +308,7 @@ class Query extends App {
 			case 'select':
 				//adds in our select values
 				D::log('hello');
-				$sqlString = 'SELECT ' . $this->_buildSelect() . "\n" . ' FROM ' . join(', ', (array)Query::$_fromValue) . $this->_buildJoins() . "\n" .  $this->_buildWhereString($this->_whereValue) . $this->_buildOrderBy() . $this->_buildLimit();
+				$sqlString = 'SELECT ' . $this->_buildSelect() . "\n" . ' FROM ' . join(', ', (array)Query::$_fromValue) . $this->_buildJoins() .  $this->_buildWhereString($this->_whereValue) . $this->_buildOrderBy() . $this->_buildLimit();
 				break;
 			case 'update':
 				$sqlString = 'UPDATE ' . f_first(Query::$_fromValue) . "\n" . ' SET ' . $this->_buildSet($this->_setValue) . $this->_buildWhereString($this->_whereValue);
