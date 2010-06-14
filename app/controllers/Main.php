@@ -3,7 +3,8 @@
 Class Main extends App {
 
 	static $urlPattern = array(
-		'/users.*/' => array('Users.php')
+		'/users.*/' => array('Users.php'),
+		'/admin.*/' => array('Admin.php')
 	);
 
 	function __construct() {

@@ -5,16 +5,13 @@
 	'body' => B::body(
 		B::header(
 			B::h1('Dashboard'),
-			T::get('site/nav')
+			T::get('admin/site/nav')
 		),
 		B::section(
-			B::h3('Projects'),
-			B::ul(join(array_map(
-				function($v) {
-					return B::li(V::get('project/brief', array('project' => $v)));
-				},
-				$projects
-			)))
+			B::h3('Pages')
+		),
+		B::section(
+			B::h3('meh')
 		),
 		B::section(
 			B::h3('Users'),

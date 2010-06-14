@@ -4,7 +4,7 @@
 		'Dashboard'
 	)),
 	B::li(B::a(
-		array('href' => SITE_URL . 'projects'),
-		'Projects'
+		array('href' => SITE_URL . 'admin'),
+		'Admin'
 	))
 ));
