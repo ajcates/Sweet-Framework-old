@@ -346,7 +346,7 @@ class Query extends App {
 				));
 				break;
 			case 'delete':
-				$sqlString = 'DELETE FROM ' . join(', ', Query::$_fromValue) . $this->_buildWhereString($this->_whereValue);
+				$sqlString = 'DELETE FROM ' . join(', ', (array)Query::$_fromValue) . $this->_buildWhereString($this->_whereValue);
 				break;
 		}
 		$this->sql = $sqlString;
