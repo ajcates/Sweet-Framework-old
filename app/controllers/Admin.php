@@ -11,16 +11,10 @@ Class Admin extends App {
 
 	function index() {
 	
-		//Write to the log.
-		//D::show();
-		
-		
-		
-		//D::show('hello world');
-		//Show somethign to the screen.
-		//D::show(, 'Some Projects');
-		
-		
+		/*
+		@todo
+		Make the admin message work.
+		*/
 		
 		$this->libs->Template->set(array(
 			
@@ -34,10 +28,40 @@ Class Admin extends App {
 	}
 	
 	function pages() {
+		if(!$this->models->User->loggedIn()) {
+			$this->libs->Uri->redirect('admin');
+		}
 		$this->libs->Template->set(array(
 		));
-		$this->libs->Template->render('users/login.php');
+		/*
+		@todo
+		Make this template a genric for a listing
+		*/
+		$this->libs->Template->render('admin/pages.php');
 	}
+	
+	function addpage() {
+		if(!$this->models->User->loggedIn()) {
+			$this->libs->Uri->redirect('admin');
+		}
+		
+		$this->libs->Template->render('admin/addpage.php');
+	}
+	
+	function doaddpage() {
+		if(!$this->models->User->loggedIn()) {
+			return $this->libs->Uri->redirect('admin');
+		}
+		
+		if(!$this->model('Pages')->add($_POST)) {
+			$this->lib('Session')->flash('AdminMessage', 'Add Page Failed');
+			return $this->libs->Uri->redirect('admin/addpage');
+		}
+		
+		$this->lib('Session')->flash('AdminMessage', 'Page Added Successfully');
+		return $this->libs->Uri->redirect('admin/pages');
+	}
+	
 	
 	function dologin() {
 		D::log($_POST, '_POST');

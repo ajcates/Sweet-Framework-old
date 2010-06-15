@@ -47,7 +47,12 @@ class User extends App {
 			return false;
 		}
 		$this->libs->Session->data('loggedIn', true);
+		$this->libs->Session->data('userId', $user->id);
 		return true;
+	}
+	
+	function getCurrentUser() {
+		return $this->get($this->libs->Session->data('userId'))->one();
 	}
 	
 	/**
