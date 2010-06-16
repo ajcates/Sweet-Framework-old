@@ -34,10 +34,12 @@ class Pages extends App {
 	}
 	
 	function add($page) {
-		
+		if(empty($page['title']) || empty($page['slug'])) {
+			return false;
+		}
 		return $this->libs->Query->insert(array_merge(
 			$page,
-			array('user' => $this->model('User')->getCurrentUser()->id)
+			array('user' => $this->model('User')->getCurrentUser()->id, 'dateCreated' => time())
 		))->into($this->tableName)->results('bool');
 	}
 }

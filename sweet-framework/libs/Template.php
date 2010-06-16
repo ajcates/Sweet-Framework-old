@@ -77,7 +77,7 @@ class Template extends App {
 	
 	private $data = array();
 	
-	public function __construct($data=null) {}
+	public function __construct() {}
 	
 	public function __set($name, $value) {
 		$this->data[$name] = $value;
@@ -95,6 +95,7 @@ class Template extends App {
 	public function render($fileNameThatNoOneBetterUse) {
 		extract($this->data);
 		include(T::$loc . '/templates/' . SweetFramework::fileLoc($fileNameThatNoOneBetterUse));
+		$this->data = array();
 	}
 	
 	public function get($file=null) {

@@ -42,7 +42,8 @@ class User extends App {
 	 * @return bool
 	 */
 	function logIn($username, $password) {
-		if(!$user = $this->get($username)->one() || $user->password !== $password) {
+		$user = $this->get($username)->one();
+		if(empty($user) || $user->password !== $password) {
 			$this->libs->Session->data('loggedIn', false);
 			return false;
 		}

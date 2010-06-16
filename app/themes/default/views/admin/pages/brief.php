@@ -1,0 +1,1 @@
+<a href="<?=SITE_URL . 'admin/page/' . $page->id?>"><?=$page->title?> - <?=$page->title?></a>

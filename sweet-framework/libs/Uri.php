@@ -18,6 +18,7 @@ class Uri extends App {
 				- Add in a callRoute() function that essenitally calls up the correct controller
 				- Maybe rewrite the loadUrl function to make it more modular
 			- Make it clearer to as what is happening in this code
+			- Don't make it so coupled with $_SERVER['QUERY']
 		*/
 		//[0] => helldsdfs34&what=4
 		$this->request = f_first($_SERVER['argv']);
@@ -142,6 +143,8 @@ if(!empty($this->request)) {
 		foreach($regexs as $regex => $func) {
 			preg_match_all($regex, $_SERVER['QUERY_STRING'], $matches);
 			if(f_first($matches)) {
+				D::log($regex, 'regex');
+				D::log($func, 'fucn');
 				return f_push(
 					array($func),
 					f_map(

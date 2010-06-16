@@ -21,7 +21,7 @@ class Session extends App {
 		//$this->libs->Config->get('Session', 'sessionTableName')
 		
 		//$this->libs->Config->get('Session', 'sessionDataTableName')
-		D::log('FRESH N EASY');
+		D::log('Session is starting');
 		$this->start();
 		
 	}
@@ -56,7 +56,7 @@ class Session extends App {
 					$this->_valid = true;
 					$this->_id = $row->id;
 					$this->loadData($this->libs->Query->select('*')->from($this->libs->Config->get('Session', 'dataTableName'))->where(array('session' => $this->_id))->results());
-					D::log($this->_data, 'cookie is good.');
+					D::log($this->_data, 'cookie is good. heres some data:');
 					return true;
 				}
 			}
