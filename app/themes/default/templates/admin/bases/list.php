@@ -4,7 +4,7 @@
 	),
 	'body' => B::body(
 		B::header(
-			B::h1('Dashboard - ' . $title),
+			B::h1('SweetFramework - ' . $title),
 			T::get('admin/parts/nav')
 		),
 		ifthereshow(@$message, 

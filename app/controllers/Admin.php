@@ -8,6 +8,11 @@ Class Admin extends App {
 		$this->lib(array('Template', 'Uri'));
 		$this->model('User');
 		$this->helper('misc');
+		$this->libs->Template->set(array(
+			'message' => $this->lib('Session')->flash('AdminMessage')
+		));
+		
+		//
 	}
 
 	function index() {
@@ -28,9 +33,31 @@ Class Admin extends App {
 			'actions' => B::a(array('href'=> SITE_URL .'admin/adduser'), 'Add User'),
 			'items' => $this->model('User')->limit(10)->all(),
 			'itemsEach' => function($v) {
-				return B::li($v->fullname);
+				//return B::li($v->fullname);
+				return B::li(V::get('admin/users/brief', array('user'=> $v)));
 			}
 		))->render('admin/bases/list');
+	}
+	
+	function user() {
+		if(!$this->models->User->loggedIn()) {
+			$this->libs->Uri->redirect('admin');
+		}
+		$user = $this->model('pages')->get($this->libs->Uri->get(2))->one();
+		D::log($user, 'user');
+		if(!$user) {
+			$this->libs->Template->set(array(
+				'message' => 'User could not be found',
+				'title' => 'No User Found',
+				'content' => ''
+			));	
+		} else {
+			$this->libs->Template->set(array(
+				'title' => 'User: ' . $user->fullname,
+				'content' => V::get('admin/users/detail', array('user' => $user))
+			));
+		}		
+		$this->libs->Template->render('admin/bases/content');
 	}
 	
 	
@@ -85,7 +112,7 @@ Class Admin extends App {
 			$this->lib('Session')->flash('AdminMessage', 'Add Page Failed');
 			return $this->libs->Uri->redirect('admin/addpage');
 		}
-		$this->lib('Session')->flash('AdminMessage', 'Page Added Successfully');
+		$this->lib('Session')->flash('AdminMessage', $_POST['title'] . ' Added Successfully');
 		return $this->libs->Uri->redirect('admin/pages');
 	}
 	

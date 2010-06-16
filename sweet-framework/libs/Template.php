@@ -92,15 +92,20 @@ class Template extends App {
 		return $this;
 	}
 	
-	public function render($fileNameThatNoOneBetterUse) {
-		extract($this->data);
+	public function render($fileNameThatNoOneBetterUse, $data=null) {
+		if(isset($data)) {
+			extract($data);
+		} else {
+			extract($this->data);
+			$this->data = array();
+		}
 		include(T::$loc . '/templates/' . SweetFramework::fileLoc($fileNameThatNoOneBetterUse));
-		$this->data = array();
+		
 	}
 	
-	public function get($file=null) {
+	public function get($file, $data=array()) {
 		ob_start();
-		$this->render($file);
+		$this->render($file, $data);
 		return ob_get_clean();
 	}
 }
