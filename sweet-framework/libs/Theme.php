@@ -32,7 +32,7 @@ class Theme extends App {
 			if(substr(URL, -1) == '?') {
 				T::$url = $this->themeUrl = substr(URL, 0, -1) . $newPlace;
 			} else {
-				T::$url = $this->themeUrl = URL . $newPlace;
+				T::$url = $this->themeUrl = URL . $newPlace . '/';
 			}
 			T::$loc = LOC . '/' . $newPlace;
 			//$this->libs->Config->set('site', 'theme', $newPlace);

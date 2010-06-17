@@ -25,8 +25,8 @@ time, mark, audio, video {
 
 body {
     line-height:1.5;
-    background: #513b2c;
-    color: #e6eaff;
+    background: #3b3535;
+    color: #eee;
 }
 
 article,aside,canvas,details,figcaption,figure,
@@ -101,24 +101,25 @@ input, select {
 }
 
 header {
-	background: rgba(97, 176, 169, 1);
+	background: #61b0a9;
 	width: 100%;
 	-webkit-box-shadow: 0px 0px 3px rgba(0,0,0, .7);
 }
 header h1 {
 	padding-left: .5em;
-	font-size: 2em;
+	font-size: 2.5em;
 	line-height: 2em;
-	text-shadow: 0px 1px 0px rgba(255,255,255, .2);
-	border-bottom: 1px solid rgba(255,255,255, .2);
-	color: rgba(0,0,0, .7);
+	text-shadow: 1px 1px 1px rgba(255,255,255, .2), 2px 2px 0px rgba(182, 44, 44, .7), 2px 2px 2px rgba(0,0,0, .5);
+	border-bottom: 1px solid rgba(255,255,255, .3);
+	color: rgba(0,0,0, .5);
 }
 
 header nav {
 	width: 100%;
-	background: #b6201e;
+	background: #b62c2c;
 	font-weight: bold;
-	border-top: 1px solid rgba(0,0,0, .4);
+	border-top: 1px solid rgba(0,0,0, .5);
+	border-bottom: 1px solid rgba(255,255,255, .2);
 }
 header nav:after {
 	clear: both;
@@ -138,7 +139,7 @@ header nav ul li a {
 	display: block;
 	color: #e6eaff;
 	text-decoration: none;
-	text-shadow: 0px 1px 0px rgba(0,0,0, .5);
+	text-shadow: 0px 1px 1px rgba(0,0,0, .7);
 	font-size: 1em;
 	line-height: 1.4em;
 }
@@ -172,4 +173,8 @@ footer {
 	margin-top: 1em;
 	text-align: center;
 	margin-left: 1em;
+}
+
+label {
+	margin-right: 1em;
 }
