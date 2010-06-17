@@ -1,0 +1,175 @@
+/* @override http://localhost/projects/sweet-framework/app/themes/defaultstyles/main.css */
+
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    font-family: "Calibri", "Myriad Pro", Lucida Grande, Lucida, Verdana, sans-serif;
+}
+
+body {
+    line-height:1.5;
+    background: #513b2c;
+    color: #e6eaff;
+}
+
+article,aside,canvas,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section,summary { 
+    display:block;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-family: "Museo Slab";
+	text-shadow: 0px 1px 0px rgba(0,0,0, .7);
+}
+
+
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    border:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+    color: #61b0a9;
+}
+
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+mark {
+    background-color:#ff9;
+    color:#000; 
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted #000;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+hr {
+    display:block;
+    height:1px;
+    border:0;   
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+
+input, select {
+    vertical-align:middle;
+}
+
+header {
+	background: rgba(97, 176, 169, 1);
+	width: 100%;
+	-webkit-box-shadow: 0px 0px 3px rgba(0,0,0, .7);
+}
+header h1 {
+	padding-left: .5em;
+	font-size: 2em;
+	line-height: 2em;
+	text-shadow: 0px 1px 0px rgba(255,255,255, .2);
+	border-bottom: 1px solid rgba(255,255,255, .2);
+	color: rgba(0,0,0, .7);
+}
+
+header nav {
+	width: 100%;
+	background: #b6201e;
+	font-weight: bold;
+	border-top: 1px solid rgba(0,0,0, .4);
+}
+header nav:after {
+	clear: both;
+	display: block;
+	content: '';
+}
+
+header nav ul {
+    list-style:none;
+    margin-left: .5em;
+}
+header nav ul li {
+	float: left;
+}
+header nav ul li a {
+	padding: .5em .75em;
+	display: block;
+	color: #e6eaff;
+	text-decoration: none;
+	text-shadow: 0px 1px 0px rgba(0,0,0, .5);
+	font-size: 1em;
+	line-height: 1.4em;
+}
+header nav ul li a:hover {
+	background: rgba(0,0,0, .2);
+	position: relative;
+	top: 1px;
+}
+
+div.main {
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-top: 1em;
+	padding: 1em;
+	border: 1px solid rgba(255,255,255, .1);
+	border-bottom: 1px solid rgba(0,0,0, .1);
+	-webkit-border-radius: 4px;
+	-webkit-box-shadow:
+		inset 0px 2px 4px rgba(0,0,0, .2),
+		0px 1px 0px rgba(255,255,255, .1);
+	background: rgba(0,0,0, .15);
+}
+
+div.main ul {
+	list-style-position: inside;
+	font-size: .9em;
+	list-style-type: square;
+}
+
+footer {
+	margin-top: 1em;
+	text-align: center;
+	margin-left: 1em;
+}

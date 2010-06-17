@@ -34,7 +34,39 @@ class User extends App {
 	}
 	
 	/**
-	 * logIn function. Trys to login in the user
+	 * add function. Takes a key/val of user details then adds it to the db.
+	 * 
+	 * @access public
+	 * @param array $user.
+	 * @return void
+	 */
+	function add($user=null) {
+		if(empty($user['fullname']) || empty($user['username']) || $user['password'] !== $user['passwordcheck']) {
+			return false;
+		}
+		unset($user['passwordcheck']);
+		$user['password'] = $this->hashPassword($user['password']);
+		return $this->libs->Query->insert($user)->into($this->tableName)->results('bool');
+	}
+	
+	private function hashPassword($password) {
+		return sha1($password . $this->lib('Config')->get('site', 'salt'));
+	}
+
+	function edit($id, $user) {
+		if(empty($user['password'])) {
+			unset($user['password'], $user['passwordcheck']);
+		} else if($user['password'] !== $user['passwordcheck']) {
+			return false;
+		} else {
+			unset($user['passwordcheck']);
+			$user['password'] = $this->hashPassword($user['password']);
+		}
+		return $this->get($id)->libs->Query->update($this->tableName)->set($user)->results('bool');
+	}
+	
+	/**
+	 hash()ogIn function. Trys to login in the user
 	 * 
 	 * @access public
 	 * @param string $username
@@ -43,7 +75,7 @@ class User extends App {
 	 */
 	function logIn($username, $password) {
 		$user = $this->get($username)->one();
-		if(empty($user) || $user->password !== $password) {
+		if(empty($user) || $user->password !== $this->hashPassword($password)) {
 			$this->libs->Session->data('loggedIn', false);
 			return false;
 		}

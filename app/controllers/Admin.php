@@ -1,8 +1,14 @@
-<?php
+<?
+class Admin extends App {
 
-Class Admin extends App {
-
-	static $urlPattern = array();
+	static $urlPattern = array(
+		'/user\/add\/do/' => 'doaddUser',
+		'/user\/add/' => 'addUser',
+		'/user\/edit\/do\/(.*)/' => 'doeditUser',
+		'/user\/edit\/(.*)/' => 'editUser',
+		'/user\/delete\/(.*)/' => 'deleteUser',
+		'/user\/duplicate\/(.*)/' => 'duplicateUser'
+	);
 
 	function __construct() {
 		$this->lib(array('Template', 'Uri'));
@@ -39,11 +45,64 @@ Class Admin extends App {
 		))->render('admin/bases/list');
 	}
 	
-	function user() {
+	function editUser() {
 		if(!$this->models->User->loggedIn()) {
 			$this->libs->Uri->redirect('admin');
 		}
-		$user = $this->model('pages')->get($this->libs->Uri->get(2))->one();
+		$user = $this->model('User')->get($this->libs->Uri->get(0))->one();
+		$this->libs->Template->set(array(
+			'title' => 'Edit User: ' . $user->fullname,
+			'form' => $this->libs->Template->get('admin/parts/edituser', array('user' => $user))
+		));
+		$this->libs->Template->render('admin/bases/form');
+		
+	}
+	
+	function addUser() {
+		if(!$this->models->User->loggedIn()) {
+			$this->libs->Uri->redirect('admin');
+		}
+		$this->libs->Template->set(array(
+			'title' => 'Add User',
+			'form' => $this->libs->Template->get('admin/parts/adduser')
+		));
+		$this->libs->Template->render('admin/bases/form');
+	}
+	
+	function doaddUser() {
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
+		if(!$this->model('User')->add($_POST)) {
+			$this->lib('Session')->flash('AdminMessage', 'Add User Failed');
+			return $this->libs->Uri->redirect('admin/user/add');
+		}
+		$this->lib('Session')->flash('AdminMessage', $_POST['fullname'] . 'Was Added Successfully');
+		return $this->libs->Uri->redirect('admin/users');
+	}
+	
+	
+	function doeditUser() {
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
+		if(!$this->model('User')->edit($this->libs->Uri->get(0), $_POST)) {
+			$this->lib('Session')->flash('AdminMessage', 'Edit User Failed');
+			return $this->libs->Uri->redirect('admin/user/edit/' . $this->libs->Uri->get(0));
+		}
+		$this->lib('Session')->flash('AdminMessage', $_POST['fullname'] . ' Was Edited Successfully');
+		return $this->libs->Uri->redirect('admin/users');
+	}
+	
+	function deleteUser() {
+		D::show('delete');
+		D::show($this->libs->Uri->get(0));
+	}
+	
+	function duplicateUser() {
+		D::show('duplicate');
+		D::show($this->libs->Uri->get(0));
+	}
+	
+	function user() {
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
+		$user = $this->model('User')->get($this->libs->Uri->get(2))->one();
 		D::log($user, 'user');
 		if(!$user) {
 			$this->libs->Template->set(array(
@@ -62,9 +121,7 @@ Class Admin extends App {
 	
 	
 	function pages() {
-		if(!$this->models->User->loggedIn()) {
-			return $this->libs->Uri->redirect('admin');
-		}
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
 		//V::get('admin/pages/brief', array('page' => $v))
 		$this->libs->Template->set(array(
 			'title' => 'Pages',
@@ -77,9 +134,7 @@ Class Admin extends App {
 	}
 	
 	function page() {
-		if(!$this->models->User->loggedIn()) {
-			$this->libs->Uri->redirect('admin');
-		}
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
 		$page = $this->model('pages')->get($this->libs->Uri->get(2))->one();
 		$this->libs->Template->set(array(
 			'title' => 'Page: ' . $page->title,
@@ -93,21 +148,17 @@ Class Admin extends App {
 	}
 	
 	function addpage() {
-		if(!$this->models->User->loggedIn()) {
-			$this->libs->Uri->redirect('admin');
-		}
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
 		$this->libs->Template->set(array(
 			'title' => 'Add Page',
-			'form' => $this->libs->Template->get('admin/parts/addpage.php')
+			'form' => $this->libs->Template->get('admin/parts/addpage')
 		));
 		
 		$this->libs->Template->render('admin/bases/form');
 	}
 	
 	function doaddpage() {
-		if(!$this->models->User->loggedIn()) {
-			return $this->libs->Uri->redirect('admin');
-		}
+		if(!$this->models->User->loggedIn()) { return $this->libs->Uri->redirect('admin');}
 		if(!$this->model('Pages')->add($_POST)) {
 			$this->lib('Session')->flash('AdminMessage', 'Add Page Failed');
 			return $this->libs->Uri->redirect('admin/addpage');

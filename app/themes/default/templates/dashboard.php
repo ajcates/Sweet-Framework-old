@@ -13,7 +13,7 @@
 				function($v) {
 					return B::li(V::get('project/brief', array('project' => $v)));
 				},
-				$projects
+				array()//$projects
 			)))
 		),
 		B::section(

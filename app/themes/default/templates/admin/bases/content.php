@@ -1,6 +1,11 @@
 <?=B::get('xhtml5', array(
 	'head' => B::head(
-		B::title('SweetFramework CMS - ' . $title)
+		B::title('SweetFramework CMS - ' . $title),
+		B::link(array(
+			'href' => T::$url . 'styles/main.css',
+			'rel' => 'stylesheet',
+			'type' => 'text/css'
+		))
 	),
 	'body' => B::body(
 		B::header(
