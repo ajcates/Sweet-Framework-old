@@ -2,7 +2,20 @@
 class Pages extends App {
 
 	var $tableName = 'pages';
-
+	var $pk = 'id';
+	var $fields = array(
+		'id' => array('int', 11),
+		'user' => array('int', 11),
+		'slug' => array('varchar', 11),
+		'title' => array('varchar', 256),
+		'description' => array('varchar', 256),
+		'content' => array('text'),
+		'dateCreated' => array('int', 11)
+	);
+	var $relationships = array(
+		'user' => array('users', 'id')
+	);
+	
 	function __construct() {
 		$this->lib(array('databases/Query', 'Session'));
 	}
