@@ -28,6 +28,7 @@ class Theme extends App {
 		//@todo rename this to just set
 		$newPlace = 'app/themes/' . $name;
 		D::log(LOC . '/' . $newPlace, 'new Place');
+	//	D::log(URL, 'URL');
 		if(is_dir(LOC . '/' . $newPlace)) {
 			if(substr(URL, -1) == '?') {
 				T::$url = $this->themeUrl = substr(URL, 0, -1) . $newPlace;

@@ -31,14 +31,14 @@ class Uri extends App {
 		//
 		
 		D::log($this->request, 'request');
-		define('URL', $this->protocol . '://' . $this->domain . strstr($_SERVER['REQUEST_URI'] .'?', '?', true) );
-		/*
-if(!empty($this->request)) {
-			
-		} else {
-			define('URL', $this->protocol . '://' . $this->domain . $_SERVER['REQUEST_URI']);	
-		}
-*/
+		
+		//$_SERVER['REQUEST_URI'], '/')
+		//$_SERVER['REQUEST_URI']
+		$folder = strstr($_SERVER['REQUEST_URI'] .'?', '?', true);
+		
+
+		
+		define('URL', $this->protocol . '://' . $this->domain . substr($folder, 0, strrpos($folder, '/')) . '/');
 		
 		D::log(URL, 'URL');
 		

@@ -1,5 +1,6 @@
-/* @override http://localhost/projects/sweet-framework/app/themes/defaultstyles/main.css */
-
+/* @override 
+	http://localhost/projects/sweet-framework/app/themes/default/styles/main.css
+*/
 
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -109,9 +110,14 @@ header h1 {
 	padding-left: .5em;
 	font-size: 2.5em;
 	line-height: 2em;
-	text-shadow: 1px 1px 1px rgba(255,255,255, .2), 2px 2px 0px rgba(182, 44, 44, .7), 2px 2px 2px rgba(0,0,0, .5);
+	text-shadow:
+		1px 1px 1px rgba(255,255,255, .2),
+		1px 1px 0px rgba(182, 44, 44, .7),
+		2px 2px 0px rgba(182, 44, 44, .7),
+		2px 2px 5px rgba(115, 255, 188, .4)
+	;
 	border-bottom: 1px solid rgba(255,255,255, .3);
-	color: rgba(0,0,0, .5);
+	color: rgba(0,0,0, .35);
 }
 
 header nav {
