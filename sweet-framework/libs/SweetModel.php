@@ -1,12 +1,73 @@
 <?
 
-class SweetRow {
-	$name;
-	$table;
+class SweetModel extends App {
+
+
+	$model;
+	$items;
+	
+	
+	function __construct() {
+		$this->lib('Query');
+	}
+	
+	var $_buildOptions = array();
+	
+	function find() {
+		$this->_buildOptions['find'] = func_get_args();
+	}
+	
+	var $_filter;
+	
+	function filter() {
+		$this->_buildOptions['filter'] = func_get_args();
+	}
+	
+	function limit() {
+		$this->_buildOptions['limit'] = func_get_args();
+	}
+	
+	function create() {
+		//execute some sql
+	}
+	
+	function sort() {
+		$this->_buildOptions['sort'] = func_get_args();
+	}
+	
+	function pull() {
+		$this->_buildOptions['sort'] = f_flatten(func_get_args());
+	}
+	
+	function offset() {
+		$this->_buildOptions['limit'] = array_reverse(func_get_args());
+	}
+	
+	function update() {
+		$this->_buildOptions['update'] = func_get_args();
+	}
+	
+	function save() {
+	
+	}
+	
+	function delete() {
+	
+	}
+	
+	function all() {
+	
+	}
+	
+	function one() {
+	
+	}
+	
 	
 }
 
-class SweetModel extends App {
+
+
 
 /*
 	CREATE TABLE `pages` (
@@ -21,50 +82,84 @@ class SweetModel extends App {
   KEY `user` (`user`),
   CONSTRAINT `pages_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+
+build out the query and then return an array of sweet rows
+
+sweet rows are chainable and can dynamicly create new sweetrows for relation ships
+
+when you call a propertiy on a sweet row it checks to see if its model has that relation ship, if so it returns back a new sweet row
+	
+
+PagesModel.pull(array('user', 'group'))
+	//should join the pages table to the user table which is joined with the group.
+	- The pages model has a relationship for user defined in it. whatever model that points to will be used when finding the realtion ship for group
+
+
+
+
+in theroy models only need to store 1 -> 1 relation ship info becuase more advance data would be kept in other models.
+	?although you can describe more complex relationships to use in the model
+
+are realtion ships just premade joins?
+	member how i had it you only could define the column name the join func? could i somewhat recreate this with my ORM?
+
+HolsterModel.relationShips = array(
+	'guns' => array('id' => array('GunHolsters', 'holster', '')),
+	'user' => array('users', 'id')
+)
+
+pull('guns')
+
+=========
+
+
+->create($keyValue) create a new object from key/value pairs
+	//great for realtion ships becuase when they try and read the ID from the object it automaticly gets inserted and returned
+
+->all() is a specical method that returns all of an items objects as a key/value array
+	//maybe I need to come up with a new name for this…
+	
+->find() if you pass it a:
+	number: you get that a key/value pair of that item as based on it's id
+	array: basicy key/value pairs of the and statment
+		if the value is an Array forms an IN statment
+		if the value is a model it uses it's primary key(s)
+	an array of numbers: Those id's.
+	mutiple args, basicly an OR statment
+	
+
+->pull($cols) used to pull other types of objects instead of being lazy and doing it later.
+
+->filter() Key value pairs of things you don't want
+
+->limit(max) the amount of items you want to limit it too
+
+->offset(amount, limit) the amount you would like to offset the items, by default limit is infinty unless used in combo with the limit function
+
+->update($keyVal) Key value pairs of the things you would like to set. If you don't call the get when useing this method it sets it executes for all rows.
+
+->save() saves the current objects to the db.
+
+->fix($array) An array of name of the items you would like to fix
+
+->delete() Deletes everything from the current object if no get() has been ran it deletes everything
+
+->sort($keyVal) How you would like to sort these objects from the db if you pass if just a string it will sort by that string DESC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 */
-
-	$model;
-	$items;
-	
-	
-	
-	
-	
-	function all() {
-	
-	}
-	
-	function one() {
-	
-	}
-	
-	var $_buildOptions = array();
-	
-	function get() {
-		$this->_buildOptions['get'] = func_get_args();
-	}
-	
-	var $_filter;
-	
-	function filter() {
-		$this->_buildOptions['filter'] = func_get_args();
-	}
-	
-	
-	
-	function limit() {
-		$this->_buildOptions['limit'] = func_get_args();
-	}
-	
-	
-	
-	
-	
-	
-	
-
-
-}
-
-
-
