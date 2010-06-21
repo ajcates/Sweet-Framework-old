@@ -15,22 +15,22 @@ class SweetFramework extends App {
 
 	static $urlPattern;
 
-	function __construct($configFile) {
+	function __construct($appSettingName) {
 		//crap we need for the framework
-		$GLOBALS['app'] = $this; //stop this.
+		//$GLOBALS['app'] = $this; //stop this.
 		$this->helper('functional'); //makes my life oh so much easier :)
 		$this->lib(array('D', 'Config')); //Get the debuger and the config loader
 		D::initialize($this->libs->Config->get('Debug')); //start the debugger up with some config options
 		D::time('App', 'SweetFramework - ' . date("F j, Y, g:i a")); //Write what time the app starts to the log
 		
-		$appInfo = $this->libs->Config->get('SweetFramework', 'app'); //get the current app's settings
-		
+		$appInfo = $this->libs->Config->get('SweetFramework', $appSettingName); //get the current app's settings
+		define('APP_FOLDER', $appInfo['folder']);
 		foreach($appInfo['paths'] as $k => $v) {
 			if(!is_array(self::$paths[$k])) {
 				self::$paths[$k] = array();
 			}
 			//add in the applications folders to the frameworks file loader
-			self::$paths[$k][] = '/' . $appInfo['folder'] . '/' . $v .'/';
+			self::$paths[$k][] = '/' . APP_FOLDER . '/' . $v .'/';
 			//self::$paths[$k][] = join('/', array(LOC, $appInfo['folder'], $v)) .'/'; @todo A/B test these two.
 		}
 		
