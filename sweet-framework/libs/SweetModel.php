@@ -27,16 +27,12 @@ class SweetModel extends App {
 		$this->_buildOptions['limit'] = func_get_args();
 	}
 	
-	function create() {
-		//execute some sql
-	}
-	
 	function sort() {
 		$this->_buildOptions['sort'] = func_get_args();
 	}
 	
 	function pull() {
-		$this->_buildOptions['sort'] = f_flatten(func_get_args());
+		$this->_buildOptions['pull'] = f_flatten(func_get_args());
 	}
 	
 	function offset() {
@@ -47,8 +43,41 @@ class SweetModel extends App {
 		$this->_buildOptions['update'] = func_get_args();
 	}
 	
-	function save() {
+	function _build() {
+		$select = array_keys($this->fields);
+		$join = array();
+		foreach($this->_buildOptions['pull'] as $pull) {
+			$fKey = f_first(array_keys($this->realtionShips[$pull]));
+			
+			if(is_string($fKey)) {
+				$thisModelsField = $fKey;
+				$join[$this->tableName . '.' . $thisModelsField] => f_first(f_first($this->realtionShips[$pull]));
+			} else {
+				$thisModelsField = $pull;
+				$join[$this->tableName . '.' . $thisModelsField] => f_first($this->realtionShips[$pull]);
+			}
+			
+			$model = $this->model();
+			foreach($model->fields as $field) {
+				$select[] = $pull '.' $field;
+			}
+			
+			//$select[]	
+		}
+		
+		$this->relationships
+		
+		
 	
+		$this->libs->Query->select()->from($this->tableName)->where()->go()->getDriver()
+	}
+	
+	function save() {
+		
+	}
+	
+	function create() {
+		//execute some sql
 	}
 	
 	function delete() {
@@ -70,7 +99,23 @@ class SweetModel extends App {
 
 
 /*
-	CREATE TABLE `pages` (
+
+
+
+Maybe build out a cached structure of the joins attached to the model for the sweetrows?
+
+
+find is basicaly where but trys to detect an extra couple of types
+
+try and have a static array of functions to check datatypes
+
+the build joins needs to be felixble to allow for differnt model types being joined together.
+
+
+
+
+Pages Table SQL:
+CREATE TABLE `pages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) DEFAULT NULL,
   `slug` varchar(256) DEFAULT NULL,
@@ -82,6 +127,15 @@ class SweetModel extends App {
   KEY `user` (`user`),
   CONSTRAINT `pages_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+
+Holstr Joins:
+'va_items_categories' => array(
+	'va_items.item_id' => 'va_items_categories.item_id'
+), 
+'va_categories' => array(
+	'va_items_categories.category_id' => 'va_categories.category_id',
+	'va_categories.category_name' => array_map('Query::nullEscape', $filter['brand'])
+),
 
 
 build out the query and then return an array of sweet rows
@@ -110,6 +164,8 @@ HolsterModel.relationShips = array(
 )
 
 pull('guns')
+
+pull(
 
 =========
 
