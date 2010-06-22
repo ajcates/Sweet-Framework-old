@@ -4,15 +4,19 @@
 		'Dashboard'
 	)),
 	B::li(B::a(
+		array('href' => SITE_URL . 'admin/sandbox'),
+		'Sandbox'
+	)),
+	B::li(B::a(
 		array('href' => SITE_URL . 'admin/pages'),
-		'pages'
+		'Pages'
 	)),
 	B::li(B::a(
 		array('href' => SITE_URL . 'admin/users'),
-		'users'
+		'Users'
 	)),
 	B::li(B::a(
 		array('href' => SITE_URL . 'admin/logout'),
-		'logout'
+		'Logout'
 	))
 ));

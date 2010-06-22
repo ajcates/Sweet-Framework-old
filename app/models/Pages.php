@@ -14,12 +14,14 @@ class Pages extends App {
 	);
 	var $relationships = array(
 		//fk?
-		'user' => array('User', 'id')
+		'user' => array('User', 'id'),
 		//m2m
-		
-		
+		'tags' => array('id' => array('PageTags', 'page', array(
+			'tag' => array('Tags', 'id'),
+			'user' => array('User', 'id')
+		)))
 	);
-	//'tags' => array('id' => array('PageTags', ))
+	//
 	
 	/*
 	'guns' => array('id' => array('GunHolsters', 'holster', 'gun' => array('Guns', 'id')),
