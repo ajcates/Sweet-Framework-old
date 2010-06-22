@@ -1,7 +1,7 @@
 <?
 class Pages extends App {
 
-	var $tableName = 'pages';
+	var $tableName = 'Pages';
 	var $pk = 'id';
 	var $fields = array(
 		'id' => array('int', 11),
@@ -14,11 +14,18 @@ class Pages extends App {
 	);
 	var $relationships = array(
 		//fk?
-		'user' => array('User', 'id'),
-		//m2m?
-		'guns' => array('id' => array('GunHolsters', 'holster', 'gun' => array('Guns', 'id')),
-		'categories' => array('id' => array('PageCategories', 'page', 'category' => array('Categories' => 'id'))
+		'user' => array('User', 'id')
+		//m2m
+		
+		
 	);
+	//'tags' => array('id' => array('PageTags', ))
+	
+	/*
+	'guns' => array('id' => array('GunHolsters', 'holster', 'gun' => array('Guns', 'id')),
+	'categories' => array('id' => array('PageCategories', 'page', 'category' => array('Categories' => 'id'))
+	
+	 	 */
 	
 	
 	/*

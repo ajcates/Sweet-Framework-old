@@ -1,7 +1,7 @@
 <?
 class User extends App {
 
-	var $tableName = 'users';
+	var $tableName = 'Users';
 
 	function __construct() {
 		$this->lib(array('databases/Query', 'Session'));

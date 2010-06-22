@@ -6,6 +6,6 @@ SweetFramework::getClass('lib', 'Config')->setAll('Session', array(
 	'cookieName' => 'crad-token',
 	'use' => array($_SERVER['REMOTE_ADDR']),
 	'sslCookies' => false,
-	'tableName' => 'sessions',
-	'dataTableName' => 'sessionData'
+	'tableName' => 'Sessions',
+	'dataTableName' => 'SessionData'
 ));
