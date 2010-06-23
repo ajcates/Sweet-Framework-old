@@ -34,7 +34,7 @@ class SweetFramework extends App {
 			//self::$paths[$k][] = join('/', array(LOC, $appInfo['folder'], $v)) .'/'; @todo A/B test these two.
 		}
 		
-		$this->lib(array('Uri', 'Theme'));
+		$this->lib(array_merge(array('Uri', 'Theme'), $this->libs->Config->get('SweetFramework', 'autoload') ));
 
 		$this->libs->Uri->callRoute();
 		self::end();
