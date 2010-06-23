@@ -1,10 +1,9 @@
 <?
-
 class SweetModel extends App {
 
 
-	$model;
-	$items;
+	var $model;
+	var $items;
 	
 	
 	function __construct() {
@@ -51,25 +50,25 @@ class SweetModel extends App {
 			
 			if(is_string($fKey)) {
 				$thisModelsField = $fKey;
-				$join[$this->tableName . '.' . $thisModelsField] => f_first(f_first($this->realtionShips[$pull]));
+				$join[$this->tableName . '.' . $thisModelsField] = f_first(f_first($this->realtionShips[$pull] ));
 			} else {
 				$thisModelsField = $pull;
-				$join[$this->tableName . '.' . $thisModelsField] => f_first($this->realtionShips[$pull]);
+				$join[$this->tableName . '.' . $thisModelsField] = f_first($this->realtionShips[$pull]);
 			}
 			
 			$model = $this->model();
 			foreach($model->fields as $field) {
-				$select[] = $pull '.' $field;
+				$select[] = $pull . '.' . $field;
 			}
 			
 			//$select[]	
 		}
 		
-		$this->relationships
+		//$this->relationships
 		
 		
 	
-		$this->libs->Query->select()->from($this->tableName)->where()->go()->getDriver()
+		$this->libs->Query->select()->from($this->tableName)->where()->go()->getDriver();
 	}
 	
 	function save() {

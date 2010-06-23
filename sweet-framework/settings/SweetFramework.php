@@ -3,7 +3,8 @@ SweetFramework::getClass('lib', 'Config')->setAll('SweetFramework', array(
 	'benchMark' => false,
 	'niceUrls' => false,
 	'autoload' => array(
-		'Session'
+		'Session',
+		'SweetModel'
 	),
 	'app' => array(
 		'folder' => 'app',
