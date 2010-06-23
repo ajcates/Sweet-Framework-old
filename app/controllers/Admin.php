@@ -29,6 +29,21 @@ class Admin extends App {
 		}
 	}
 	
+	function sandbox() {
+		if(!$this->models->User->loggedIn()) {
+			return $this->libs->Uri->redirect('admin');
+		}
+		
+		$this->libs->Template->set(array(
+			'title'=>'Dashboard',
+			'content'=> $this->libs->Template->get('admin/parts/sandbox', array(
+				'test' => 'Hello Sandbox World!',
+				'pages' => $this->model('Pages')->all()
+			
+			))
+		))->render('admin/bases/content');
+	}
+	
 	function users() {
 		if(!$this->models->User->loggedIn()) {
 			return $this->libs->Uri->redirect('admin');
