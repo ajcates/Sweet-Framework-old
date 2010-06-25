@@ -1,5 +1,5 @@
 <?
-class Pages extends App {
+class Pages extends SweetModel {
 
 	var $tableName = 'Pages';
 	var $pk = 'id';
@@ -16,12 +16,57 @@ class Pages extends App {
 		//fk?
 		'user' => array('User', 'id'),
 		//m2m
-		'tags' => array('id' => array('PageTags', 'page', array(
-			'tag' => array('Tags', 'id'),
-			'user' => array('User', 'id')
-		)))
+		'tags' => array('id' => array('PageTags', 'page'))
 	);
-	//
+	
+	/*
+	
+	'tags' => array('id' => array('PageTags', 'page', array(
+		'tag' => array('Tags', 'id'),
+		'user' => array('User', 'id')
+	)))
+	
+	////
+	
+	
+	//1 the first draft
+	pull(array('tags', array('tag' => 'type', 'user' => 'group') ))
+	
+	//2 just plain confusing:
+	pull('user', array('tags', array('tag' => array('type', 'color'), 'user' => 'group') ))
+	
+	//3 less relation ship more explixt, slightly confusing
+	pull('user', array('tags', 'tag'), array('tags', 'user'))
+	
+	//4 redux of 3 with less redundcey
+	pull('user', array('tags' => array('tag', 'user') ))
+	
+	//5 4's style with 2's complextiy
+	pull('user', array('tags' => array('tag' => array('type' => array('color')), 'user' => 'group' ) ))
+	
+	
+	
+	//6 5 explained a little more in detail
+	pull(
+		array('user' => 'group'),
+		array(
+			'tags' => array(
+				'tag' => array(
+					'type' => 'color'
+				),
+				'user' => 'group'
+				//  ==
+				array('user' => 'group')
+			)
+		)
+	)
+	*/
+	/*
+	
+	
+	
+	 	 */
+	
 	
 	/*
 	'guns' => array('id' => array('GunHolsters', 'holster', 'gun' => array('Guns', 'id')),
@@ -59,6 +104,11 @@ class Pages extends App {
 	
 	//model, field, 
 	
+	function __construct() {
+		parent::__construct();
+		//$this->lib(array('databases/Query', 'Session'));
+	}
+	/*
 	function __construct() {
 		$this->lib(array('databases/Query', 'Session'));
 	}
@@ -98,4 +148,5 @@ class Pages extends App {
 			array('user' => $this->model('User')->getCurrentUser()->id, 'dateCreated' => time())
 		))->into($this->tableName)->results('bool');
 	}
+	*/
 }

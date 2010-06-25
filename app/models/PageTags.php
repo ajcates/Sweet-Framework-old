@@ -1,5 +1,5 @@
 <?
-class PageTags extends App {
+class PageTags extends SweetModel {
 
 	var $tableName = 'PageTags';
 	var $pk = null;
@@ -10,7 +10,7 @@ class PageTags extends App {
 	);
 	var $relationships = array(
 		'page' => array('Pages', 'id'),
-		'tag' => array('Tags', 'id')
+		'tag' => array('Tags', 'id'),
 		'user' => array('Users', 'id')
 	);
 	

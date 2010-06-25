@@ -1,5 +1,5 @@
 <?
-Class App {
+class App {
 
 	protected $libs;
 	public $models;

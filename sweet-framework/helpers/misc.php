@@ -118,14 +118,6 @@ function match($pattern, $subject) {
 	return null;
 }
 
-
-function backtrace($NL = "\n") {
-	@$dbgMsg .= $NL."Debug backtrace begin:$NL";
-	$dbgMsg .= print_r_tree_expanded(debug_backtrace());
-	$dbgMsg .= "Debug backtrace end".$NL;
-	echo $dbgMsg;
-}
-
 function stacktrace() {
 	return f_map(
 		function($code) {

@@ -38,8 +38,8 @@ class Admin extends App {
 			'title'=>'Dashboard',
 			'content'=> $this->libs->Template->get('admin/parts/sandbox', array(
 				'test' => 'Hello Sandbox World!',
-				'pages' => $this->model('Pages')->all()
-			
+				'pages' => D::log($this->model('Pages')->pull('user', array('tags' => 'tag') )->all(), 'Pages')
+				//'pages2' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
 			))
 		))->render('admin/bases/content');
 	}

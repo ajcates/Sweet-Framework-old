@@ -64,7 +64,7 @@ class D {
     		} else {
     			$label .= ': ';
     		}
-    		fwrite(self::$handle, "\n" . $label . stripcslashes(var_export($var, true)) . "\n\n");
+    		fwrite(self::$handle, "\n" . $label . stripcslashes(print_r($var, true)) . "\n\n");
 		}
 		return $var;
 	}
