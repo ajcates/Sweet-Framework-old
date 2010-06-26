@@ -263,7 +263,7 @@ class Query extends App {
 		 	 	 	return join(' ', f_keyMap(
 						function($joinSets, $jTable) {
 							//$jTableName = f_last(explode(' ', $jTable));
-							return "\n" . ' LEFT JOIN ' . $jTable . ' ON ' . Query::_buildWhere($joinSets, 'AND', false);
+							return "\n" . ' RIGHT JOIN ' . $jTable . "\n\t" . 'ON ' . Query::_buildWhere($joinSets, 'AND', false);
 						},
 						$join
 					));

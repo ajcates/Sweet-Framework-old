@@ -51,95 +51,17 @@ class SweetModel extends App {
 	}
 	
 	function _build() {
-		$select = array();
+		$join = $select = array();
 		foreach(array_keys($this->fields) as $field) {
 			$select[] = $this->tableName . '.' . $field;
 		}
-		$join = array();
-		foreach($this->_buildOptions['pull'] as $pull) {
-			if(is_array($pull)) {
-				D::log($pull, 'pull array');
-				foreach($pull as $k => $v) {
-					if(is_array($v)) {
-						//multi values 'col' => array('col1', 'col2')
-						/*pull array: Array(
-						    [tags] => Array(tag, user )
-						)*/
-					} else {
-						//single
-						//array([tags] => tag)
-						$pullRel = $this->relationships[$k];
-						//$model = 								
-						if(is_string($fKey = f_first(array_keys($pullRel)))) {
-							$model = $this->model(f_first($pullRel[$fKey]));
-						} else {
-							$model = $this->model(f_first($pullRel));
-						}
-						$test = $model->_buildPull($pull, $pullRel, $this->tableName);
-						D::log($test, 'test m2m');
-						//$builtPull = 
-					}
-				}
-				
-	//			if( is_string($fKey = f_first(array_keys($pull))) ) {
-				//	$builtPull = $this->_buildPull($fKey, $this->relationships[$fKey], $this->tableName);
-	//			}
-				
-			} else {
-				//$builtPull = $this->_buildPull($pull, $this->relationships[$pull], $this->tableName);
-				
-				$pullRel = $this->relationships[$pull];
-				
-				if(is_string($fKey = f_first(array_keys($pullRel)))) {
-					$model = $this->model(f_first($pullRel[$fKey]));
-				} else {
-					$model = $this->model(f_first($pullRel));
-				}
-				
-				$builtPull = $model->_buildPull($pull, $pullRel, $this->tableName);
-				
-				//$pull, $this->tableName, 
-				/*
-				$pullRel = $this->relationships[$pull];
-				$fKey = f_first(array_keys($pullRel));
-				
-				if(is_string($fKey)) {
-					//$thisModelsField = $fKey;
-					
-					
-					//$join[$this->tableName . '.' . $thisModelsField] = f_first(f_first($pullRel ));
-					$model = $this->model(f_first($pullRel[$fKey]));
-					
-					//$pullRel[$fKey][1];
-					
-					
-					$join[$model->tableName . ' AS ' . $pull] = array(
-						$this->tableName . '.' . $fKey => $pull . '.' . f_last($pullRel)
-					);
-					
-				} else {
-					//$thisModelsField = $pull;
-					$model = $this->model(f_first($pullRel));
-					
-					$join[$model->tableName . ' AS ' . $pull] = array(
-						$this->tableName . '.' . $pull => $pull . '.' . f_last($pullRel)
-					);
-				}
-				D::log($join, 'join');
-				
-				//$model->fields, $join
-				
-				foreach(array_keys($model->fields) as $field) {
-					$select[$pull . '.' . $field] = $pull . '.' . $field ;
-				}
-				*/
-			}
-			$join += (array)$builtPull['join'];
-			$select += (array)$builtPull['select'];
-			
-			
-			//$select[]	
+		
+		foreach($this->_buildPulls($this->_buildOptions['pull']) as $build) {
+			$join += (array)$build['join'];
+			$select += (array)$build['select'];
 		}
+		
+		// -- CUTTERS
 		
 		//$this->relationships
 		
@@ -149,11 +71,62 @@ class SweetModel extends App {
 		return $this->libs->Query->select($select)->join($join)->from($this->tableName)->where()->results();
 	}
 	
+	function _buildPulls($pulls) {
+		$builtPulls = array();
+		D::log($pulls, 'pulls');
+		foreach($pulls as $k => $pull) {
+			if(is_array($pull)) {
+				//$builtPulls += (array) D::log($this->_buildPulls(array_keys($pull)), 'builder');
+				/*
+				I'm only passing in the key from the pull 
+				*/
+				
+				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull)), 'builder') );
+				
+				
+			} else {
+				$pullRel = $this->relationships[$pull];
+				
+				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+					$flName = $fKey;
+					$model = $this->model(f_first($pullRel[$fKey]));
+				} else {
+					$flName = $pull;
+					$model = $this->model(f_first($pullRel));
+				}
+				
+				//if( )
+				
+				/*
+				if(is_string($k)) {
+					$flName = $k;
+				} else {
+					$flName = $pull;
+				}
+				*/
+				
+				if(is_array($rfName = f_last($pullRel))) {
+					$rfName = f_last(f_last($pullRel));
+				}
+				D::log($pullRel, 'pullRel');
+				
+				$builtPulls[] = $model->_buildPull($pull, $pullRel, $this->tableName, $flName, $rfName);
+				
+			}
+		}
+		D::log($builtPulls, 'builtPulls');
+		return $builtPulls;
+	}
 	
 	
-	
-	function _buildPull($pull, $pullRel, $tableName) {
+	function _buildPull($pull, $pullRel, $tableName, $lfName=null, $rfName=null) {
 		$select = $join = array();
+		/*
+if(!isset($fName)) {
+			$fName = f_last($pullRel);
+		}
+*/
+		
 /*
 		if(is_string($fKey = f_first(array_keys($pullRel)))) {
 		//	$model = $this->model(f_first($pullRel[$fKey]));
@@ -165,12 +138,19 @@ class SweetModel extends App {
 			
 		}
 */
+		D::log($lfName, '$lfName');
+		D::log($rfName, '$rfName');
 		$join[$this->tableName . ' AS ' . $pull] = array(
-			$tableName . '.' . $pull => $pull . '.' . f_last($pullRel)
+			$tableName . '.' . $lfName => $pull . '.' . $rfName
 		);
+		D::log($join, 'built join');
+		
+		
+		
 		foreach(array_keys($this->fields) as $field) {
 			$select[$pull . '.' . $field] = $pull . '.' . $field;
 		}
+		D::log($select, 'built select');
 		return array(
 			'join' => $join,
 			'select' => $select
