@@ -2,7 +2,9 @@
 class User extends SweetModel {
 
 	var $tableName = 'Users';
+	
 	var $pk = 'id';
+	
 	var $fields = array(
 		'id' => array('int', 11),
 		'username' => array('varchar', 256),
@@ -12,6 +14,7 @@ class User extends SweetModel {
 	);
 	
 	var $relationships = array();
+
 
 	function __construct() {
 		$this->lib(array('databases/Query', 'Session'));

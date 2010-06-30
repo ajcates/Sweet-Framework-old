@@ -2,7 +2,9 @@
 class Pages extends SweetModel {
 
 	var $tableName = 'Pages';
+	
 	var $pk = 'id';
+	
 	var $fields = array(
 		'id' => array('int', 11),
 		'user' => array('int', 11),
@@ -12,12 +14,23 @@ class Pages extends SweetModel {
 		'content' => array('text'),
 		'dateCreated' => array('int', 11)
 	);
+	
 	var $relationships = array(
 		//fk?
-		'user' => array('User', 'id'),
+		'user' => array(
+			'User',
+			'id'
+		),
 		//m2m
-		'tags' => array('id' => array('PageTags', 'page'))
+		'tags' => array(
+			'id' => array(
+				'PageTags',
+				'page'
+			)
+		)
 	);
+	
+	
 	
 	/*
 	

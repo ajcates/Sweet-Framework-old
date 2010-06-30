@@ -42,6 +42,12 @@ class Admin extends App {
 				'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
 			))
 		))->render('admin/bases/content');
+
+		
+		
+		
+		
+		
 		/*
 		pull('user', array('tags' => array('tag', 'user') )):
 		SELECT

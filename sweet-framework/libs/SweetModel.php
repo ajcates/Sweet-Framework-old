@@ -56,7 +56,7 @@ class SweetModel extends App {
 			$select[] = $this->tableName . '.' . $field;
 		}
 		
-		foreach($this->_buildPulls($this->_buildOptions['pull'], array(), $this->tableName) as $build) {
+		foreach($this->_buildPulls($this->_buildOptions['pull'], $this->tableName) as $build) {
 			$join += (array)$build['join'];
 			$select += (array)$build['select'];
 		}
@@ -71,21 +71,63 @@ class SweetModel extends App {
 		return $this->libs->Query->select($select)->join($join)->from($this->tableName)->where()->results();
 	}
 	
-	function _buildPulls($pulls, $mExtraPuls=array(), $on=null) {
+	function _buildPulls($pulls, $on=null) {
 		$builtPulls = array();
 		if(!isset($on)) {
 			$on = $this->tableName;
 		}
 		D::log($pulls, 'pulls');
 		foreach($pulls as $k => $pull) {
+			if(!is_string($k)) {
+				if(is_array($pull)) {
+					D::log($pull, 'not_string is_array $pull');
+					$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls($pull, $on), 'not_string is_array builder') );
+					continue;
+				} else {
+					//
+					$pullRel = $this->relationships[$pull];
+				}
+			} else {
+				$pullRel = $this->relationships[$k];
+			}
+			
+			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+				$flName = $fKey;
+				$model = $this->model(f_first($pullRel[$fKey]));
+			} else {
+				$flName = $pull;
+				$model = $this->model(f_first($pullRel));
+			}
+			
+			if(is_array($pull)) {
+				// $k is getting skipped!
+				D::log($pull, 'is_string is_array $pull');
+				$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on), 'is_string is_array builder'));
+			} else {
+				if(is_array($rfName = f_last($pullRel))) {
+					$rfName = f_last(f_last($pullRel));
+				}
+				D::log($pullRel, 'pullRel');
+				
+				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
+			}
+			
+			
+			
+			/*
+			foreach((array)$pull as $p) {
+				$builtPulls[] = $model->_buildPull($p, $pullRel, $on, $flName, $rfName);
+			}
+			*/
+			
+			
+			
+			
+			
+			/*
 			if(is_array($pull)) {
 				//$builtPulls += (array) D::log($this->_buildPulls(array_keys($pull)), 'builder');
-				/*
-				I'm only passing in the key from the pull 
-				*/
 				D::log($pull, 'pull is_array');
-				
-				
 				
 				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull), array(), $on), 'builder') );
 				
@@ -105,16 +147,6 @@ class SweetModel extends App {
 					$model = $this->model(f_first($pullRel));
 				}
 				
-				//if( )
-				
-				/*
-				if(is_string($k)) {
-					$flName = $k;
-				} else {
-					$flName = $pull;
-				}
-				*/
-				
 				if(is_array($rfName = f_last($pullRel))) {
 					$rfName = f_last(f_last($pullRel));
 				}
@@ -128,18 +160,13 @@ class SweetModel extends App {
 					//i need to pass the $pull key im useing to the building…
 					$builtPulls = array_merge($builtPulls, $model->_buildPulls((array) $mExtraPuls[$pull], array(), $pull ) );
 				}
-				
-				
-				
-				
-				
-				
 			}
+			*/
 		}
 		//D::log($model->_buildPulls($mExtraPuls), 'extra pulls');
 		
 		
-		D::log($builtPulls, 'builtPulls');
+		//D::log($builtPulls, 'builtPulls');
 		return $builtPulls;
 	}
 	
@@ -180,6 +207,7 @@ Want:
 */
 		D::log($lfName, '$lfName');
 		D::log($rfName, '$rfName');
+		D::log($pull, '_buildPull $pull');
 		$join[$this->tableName . ' AS ' . $pull] = array(
 			$tableName . '.' . $lfName => $pull . '.' . $rfName
 		);
