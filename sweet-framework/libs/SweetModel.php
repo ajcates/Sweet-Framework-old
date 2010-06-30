@@ -126,7 +126,7 @@ class SweetModel extends App {
 			if(is_array($pull)) {
 				// $k is getting skipped!
 				D::log($k, 'is_string is_array $k');
-				D::log(f_construct($k, (array) $on), 'f_construct $k');
+				//D::log(f_construct($k, (array) $on), 'f_construct $k');
 				
 				
 				/*
@@ -137,7 +137,7 @@ class SweetModel extends App {
 				D::log($pull, 'is_string is_array $pull');
 				//
 				
-				$builtPulls[] = $model->_buildPull($k, $pullRel, $on, $flName, $rfName);
+				$builtPulls[] = $model->_buildPull($k, $pullRel, $k, $flName, $rfName);
 				
 				$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on, f_construct($k, $with)), 'is_string is_array builder'));
 			} else {
@@ -241,6 +241,7 @@ Want:
 			
 		}
 */
+		//JOIN CODE:
 		D::log($lfName, '$lfName');
 		D::log($rfName, '$rfName');
 		D::log($pull, '_buildPull $pull');
@@ -250,7 +251,7 @@ Want:
 		D::log($join, 'built join');
 		
 		
-		
+		//SELECT CODE:
 		foreach(array_keys($this->fields) as $field) {
 			$select[$pull . '.' . $field] = $pull . '.' . $field;
 		}
