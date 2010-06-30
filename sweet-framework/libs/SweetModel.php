@@ -71,7 +71,7 @@ class SweetModel extends App {
 		return $this->libs->Query->select($select)->join($join)->from($this->tableName)->where()->results();
 	}
 	
-	function _buildPulls($pulls, $on=null) {
+	function _buildPulls($pulls, $on=null, $with=array()) {
 		$builtPulls = array();
 		if(!isset($on)) {
 			$on = $this->tableName;
@@ -81,14 +81,34 @@ class SweetModel extends App {
 			if(!is_string($k)) {
 				if(is_array($pull)) {
 					D::log($pull, 'not_string is_array $pull');
-					$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls($pull, $on), 'not_string is_array builder') );
+					$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls($pull, $on, $with), 'not_string is_array builder') );
 					continue;
 				} else {
-					//
+					//not string
 					$pullRel = $this->relationships[$pull];
+					
+					
+					
+					
 				}
 			} else {
+				//is string
+				
 				$pullRel = $this->relationships[$k];
+				/*
+				if(is_array($pull)) {
+					// $k is getting skipped!
+					D::log($pull, 'is_string is_array $pull');
+					$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on), 'is_string is_array builder'));
+				} else {
+					if(is_array($rfName = f_last($pullRel))) {
+						$rfName = f_last(f_last($pullRel));
+					}
+					D::log($pullRel, 'pullRel');
+					
+					$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);	
+				}
+				*/
 			}
 			
 			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
@@ -99,16 +119,32 @@ class SweetModel extends App {
 				$model = $this->model(f_first($pullRel));
 			}
 			
+			if(is_array($rfName = f_last($pullRel))) {
+				$rfName = f_last(f_last($pullRel));
+			}
+			
 			if(is_array($pull)) {
 				// $k is getting skipped!
-				D::log($pull, 'is_string is_array $pull');
-				$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on), 'is_string is_array builder'));
-			} else {
-				if(is_array($rfName = f_last($pullRel))) {
-					$rfName = f_last(f_last($pullRel));
-				}
-				D::log($pullRel, 'pullRel');
+				D::log($k, 'is_string is_array $k');
+				D::log(f_construct($k, (array) $on), 'f_construct $k');
 				
+				
+				/*
+				
+				Need to f_construct the $k on the front of each of the $pull items.
+				*/
+				
+				D::log($pull, 'is_string is_array $pull');
+				//
+				
+				$builtPulls[] = $model->_buildPull($k, $pullRel, $on, $flName, $rfName);
+				
+				$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on, f_construct($k, $with)), 'is_string is_array builder'));
+			} else {
+				
+				D::log($pullRel, 'pullRel');
+				D::log($with, '$with not_array single build');
+				D::log($pull, '$pull not_array single build');
 				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
 			}
 			
