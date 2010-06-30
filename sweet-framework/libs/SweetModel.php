@@ -87,7 +87,7 @@ class SweetModel extends App {
 				
 				
 				
-				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull), array(), $on), 'builder') );
+				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull), $pull, $on), 'builder') );
 				
 			} else {
 				if(is_string($k)) {
