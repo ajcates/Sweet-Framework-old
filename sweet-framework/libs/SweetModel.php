@@ -56,7 +56,7 @@ class SweetModel extends App {
 			$select[] = $this->tableName . '.' . $field;
 		}
 		
-		foreach($this->_buildPulls($this->_buildOptions['pull']) as $build) {
+		foreach($this->_buildPulls($this->_buildOptions['pull'], array(), $this->tableName) as $build) {
 			$join += (array)$build['join'];
 			$select += (array)$build['select'];
 		}
@@ -71,8 +71,11 @@ class SweetModel extends App {
 		return $this->libs->Query->select($select)->join($join)->from($this->tableName)->where()->results();
 	}
 	
-	function _buildPulls($pulls) {
+	function _buildPulls($pulls, $mExtraPuls=array(), $on=null) {
 		$builtPulls = array();
+		if(!isset($on)) {
+			$on = $this->tableName;
+		}
 		D::log($pulls, 'pulls');
 		foreach($pulls as $k => $pull) {
 			if(is_array($pull)) {
@@ -80,12 +83,19 @@ class SweetModel extends App {
 				/*
 				I'm only passing in the key from the pull 
 				*/
+				D::log($pull, 'pull is_array');
 				
-				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull)), 'builder') );
 				
+				
+				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull), array(), $on), 'builder') );
 				
 			} else {
-				$pullRel = $this->relationships[$pull];
+				if(is_string($k)) {
+					$pullRel = $this->relationships[$k];
+				} else {
+					$pullRel = $this->relationships[$pull];
+				}
+				
 				
 				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
 					$flName = $fKey;
@@ -110,10 +120,25 @@ class SweetModel extends App {
 				}
 				D::log($pullRel, 'pullRel');
 				
-				$builtPulls[] = $model->_buildPull($pull, $pullRel, $this->tableName, $flName, $rfName);
+				
+				//D::log(, 'extra puls');
+				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
+				if(isset($mExtraPuls[$pull] )) {
+					D::log($mExtraPuls[$pull], 'mExtraPlus');
+					//i need to pass the $pull key im useing to the building…
+					$builtPulls = array_merge($builtPulls, $model->_buildPulls((array) $mExtraPuls[$pull], array(), $pull ) );
+				}
+				
+				
+				
+				
+				
 				
 			}
 		}
+		//D::log($model->_buildPulls($mExtraPuls), 'extra pulls');
+		
+		
 		D::log($builtPulls, 'builtPulls');
 		return $builtPulls;
 	}
@@ -122,9 +147,24 @@ class SweetModel extends App {
 	function _buildPull($pull, $pullRel, $tableName, $lfName=null, $rfName=null) {
 		$select = $join = array();
 		/*
-if(!isset($fName)) {
-			$fName = f_last($pullRel);
-		}
+Current:
+ LEFT JOIN Users AS user
+	ON Pages.user = user.id 
+ LEFT JOIN PageTags AS tags
+	ON Pages.id = tags.page 
+ LEFT JOIN Tags AS tag
+	ON tags.tag = tag.id
+	
+Want:
+ LEFT JOIN Users AS user
+	ON Pages.user = user.id 
+ LEFT JOIN PageTags AS tags
+	ON Pages.id = tags.page
+ LEFT JOIN Tags AS tags_tag
+	ON tags.tag = tags_tag.id
+ LEFT JOIN Users AS tags_user
+	ON tags.user = tags_user.id	
+
 */
 		
 /*

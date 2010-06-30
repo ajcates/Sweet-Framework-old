@@ -11,7 +11,7 @@ class PageTags extends SweetModel {
 	var $relationships = array(
 		'page' => array('Pages', 'id'),
 		'tag' => array('Tags', 'id'),
-		'user' => array('Users', 'id')
+		'user' => array('User', 'id')
 	);
 	
 	function __construct() {}

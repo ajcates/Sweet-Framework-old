@@ -1,5 +1,5 @@
 <?
-class Tags extends App {
+class Tags extends SweetModel {
 
 	var $tableName = 'Tags';
 	var $pk = 'id';

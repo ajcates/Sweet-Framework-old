@@ -1,7 +1,22 @@
 <?
-class Users extends App {
+class Users extends SweetModel {
 
-	var $tableName = 'users';
+	var $tableName = 'Users';
+	var $pk = null;
+	var $fields = array(
+		'page' => array('int', 11),
+		'tag' => array('int', 11),
+		'user' => array('int', 11)
+	);
+	var $relationships = array(
+		'page' => array('Pages', 'id'),
+		'tag' => array('Tags', 'id'),
+		'user' => array('Users', 'id')
+	);
+	
+	
+	
+	
 
 	function __construct() {
 		$this->lib(array('databases/Query'));

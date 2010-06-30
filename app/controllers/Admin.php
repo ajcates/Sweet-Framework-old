@@ -38,21 +38,24 @@ class Admin extends App {
 			'title'=>'Dashboard',
 			'content'=> $this->libs->Template->get('admin/parts/sandbox', array(
 				'test' => 'Hello Sandbox World!',
-				'pages' => D::log($this->model('Pages')->pull('user', array('tags' => 'tag') )->all(), 'Pages')
-				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => 'tag') )->all(), 'Pages')
+				'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
 			))
 		))->render('admin/bases/content');
 		/*
-		pages2 join:
+		pull('user', array('tags' => array('tag', 'user') )):
 		SELECT
-		Pages.id, Pages.user, Pages.slug, Pages.title, Pages.description, Pages.content, Pages.dateCreated, user.id AS 'user.id', user.username AS 'user.username', user.email AS 'user.email', user.fullname AS 'user.fullname', user.password AS 'user.password', tags.page AS 'tags.page', tags.tag AS 'tags.tag', tags.user AS 'tags.user', tags_tag.id AS 'tags.tag.id', tags_tag.name AS 'tags.tag.name'
-		 FROM (SELECT * FROM Pages LIMIT 4) AS Pages	
-		 LEFT JOIN Users AS user
+		Pages.id, Pages.user, Pages.slug, Pages.title, Pages.description, Pages.content, Pages.dateCreated, user.id AS 'user.id', user.username AS 'user.username', user.email AS 'user.email', user.fullname AS 'user.fullname', user.password AS 'user.password', tags.page AS 'tags.page', tags.tag AS 'tags.tag', tags.user AS 'tags.user', tags_tag.id AS 'tags.tag.id', tags_tag.name AS 'tags.tag.name', tags_user.id AS 'tags.user.id', tags_user.username AS 'tags.user.username', tags_user.email AS 'tags.user.email', tags_user.fullname AS 'tags.user.fullname', tags_user.password AS 'tags.user.password'
+		
+		FROM (SELECT * FROM Pages) AS Pages	
+		LEFT JOIN Users AS user
 			ON Pages.user = user.id 
-		 LEFT JOIN PageTags AS tags
+		LEFT JOIN PageTags AS tags
 			ON Pages.id = tags.page
-		 LEFT JOIN Tags AS tags_tag
+		LEFT JOIN Tags AS tags_tag
 			ON tags.tag = tags_tag.id
+		LEFT JOIN Users AS tags_user
+			ON tags.user = tags_user.id
 		*/
 	}
 	
