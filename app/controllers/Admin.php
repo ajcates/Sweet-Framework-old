@@ -38,11 +38,95 @@ class Admin extends App {
 			'title'=>'Dashboard',
 			'content'=> $this->libs->Template->get('admin/parts/sandbox', array(
 				'test' => 'Hello Sandbox World!',
-				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => 'tag') )->all(), 'Pages')
-				'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user')->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user' => 'type') ))->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user', 'tags')->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
+				
+				
+				'pages' => D::log($this->model('Pages')->pull(array('user', 'tags' => array('tag', 'user') ) )->all(), 'Pages')
+				
+				
+				
+				//'pages' => D::log($this->model('Pages')->pull('user', array('tags') ))->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->pull('user', 'tags' ))->all(), 'Pages')
+				
+				
+				
+				
+				
+				
+				//'pages' => D::log($this->model('Pages')->all(), 'Pages')
+				//'pages' => D::log($this->model('Pages')->limit(3)->pull('user')->all(), 'Pages')
 			))
 		))->render('admin/bases/content');
+
+		
+		
+		
+		
+		
 		/*
+		
+		
+		
+		
+		
+		
+		Any time there is a key:
+			- there is a sub join needed 
+				- Sub joins need:
+					- left field name
+						- is the key in the parents relation ship structure
+							/%
+							*'user'* => array(
+								'User',
+								'id'
+							),
+							%/
+					- right field name
+						- is the last element in the parents relation ship structure
+							/%
+							'user' => array(
+								'User',
+								*'id'*
+							),
+							%/
+					- table alias
+					- right table name = table alias
+					- left table name
+						- Is the parents alias 
+					
+					
+			- this sub join is based on the realtionShip structure of the key in the current model
+		
+		
+		//Example of a good query:		
+		SELECT
+		Pages.id, Pages.user, Pages.slug, Pages.title, Pages.description, Pages.content, Pages.dateCreated, user.id AS 'user.id', user.username AS 'user.username', user.email AS 'user.email', user.fullname AS 'user.fullname', user.password AS 'user.password', tags.page AS 'tags.page', tags.tag AS 'tags.tag', tags.user AS 'tags.user', tags_tag.id AS 'tags.tag.id', tags_tag.name AS 'tags.tag.name', tags_user.id AS 'tags.user.id', tags_user.username AS 'tags.user.username', tags_user.email AS 'tags.user.email', tags_user.fullname AS 'tags.user.fullname', tags_user.password AS 'tags.user.password'
+		
+		FROM (SELECT * FROM Pages) AS Pages	
+		 LEFT JOIN Users AS user
+			ON Pages.user = user.id 
+		 LEFT JOIN PageTags AS tags
+			ON Pages.id = tags.page
+		 LEFT JOIN Tags AS tags_tag
+			ON tags.tag = tags_tag.id
+		 LEFT JOIN Users AS tags_user
+			ON tags.user = tags_user.id
+		
+		
+		//////////////////==========
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		pull('user', array('tags' => array('tag', 'user') )):
 		SELECT
 		Pages.id, Pages.user, Pages.slug, Pages.title, Pages.description, Pages.content, Pages.dateCreated, user.id AS 'user.id', user.username AS 'user.username', user.email AS 'user.email', user.fullname AS 'user.fullname', user.password AS 'user.password', tags.page AS 'tags.page', tags.tag AS 'tags.tag', tags.user AS 'tags.user', tags_tag.id AS 'tags.tag.id', tags_tag.name AS 'tags.tag.name', tags_user.id AS 'tags.user.id', tags_user.username AS 'tags.user.username', tags_user.email AS 'tags.user.email', tags_user.fullname AS 'tags.user.fullname', tags_user.password AS 'tags.user.password'
