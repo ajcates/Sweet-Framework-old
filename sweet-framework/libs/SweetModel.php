@@ -103,13 +103,13 @@ class SweetModel extends App {
 				
 				
 				
-				//f_construct($k, (array)$on);
-				$builtPulls = array_merge($builtPulls, D::log( $model->_buildPulls((array)$pull, $k), 'subjoins') );
+				
+				$builtPulls = array_merge($builtPulls, D::log( $model->_buildPulls((array)$pull, $k, f_push($k, (array)$with) ), 'subjoins') );
 				
 			} else {
 			
 				if(is_array($pull)) {
-					$builtPulls = array_merge($builtPulls, $this->_buildPulls($pull, $on));
+					$builtPulls = array_merge($builtPulls, $this->_buildPulls($pull, $on, $with));
 					continue;
 				}
 				//regular join
@@ -117,7 +117,7 @@ class SweetModel extends App {
 				
 				
 				
-				////
+				///
 				$pullRel = $this->relationships[$pull];
 				
 				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
@@ -141,7 +141,11 @@ class SweetModel extends App {
 			//	D::log($pullRel, 'pullRel');
 			//	D::log($with, '$with not_array single build');
 			//	D::log($pull, '$pull not_array single build');
-				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
+				
+				
+				
+				
+				$builtPulls[] = $model->_buildPull(join('_', f_push($pull, $with)), $pullRel, $on, $flName, $rfName);
 			}
 		
 		
@@ -332,9 +336,14 @@ Want:
 		}
 */
 		//JOIN CODE:
-		D::log($lfName, '$lfName');
-		D::log($rfName, '$rfName');
+		D::log($tableName, 'tName');
+		
 		D::log($pull, '_buildPull $pull');
+		
+		if(is_array($tableName)) {
+			$tableName = join('_', ($tableName));
+		}
+		
 		$join[$this->tableName . ' AS ' . $pull] = array(
 			$tableName . '.' . $lfName => $pull . '.' . $rfName
 		);
@@ -343,7 +352,7 @@ Want:
 		
 		//SELECT CODE:
 		foreach(array_keys($this->fields) as $field) {
-			$select[$pull . '.' . $field] = $pull . '.' . $field;
+			$select[$pull . '.' . $field] = str_replace('_', '.', $pull) . '.' . $field;
 		}
 	//	D::log($select, 'built select');
 		return array(
