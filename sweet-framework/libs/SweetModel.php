@@ -73,11 +73,109 @@ class SweetModel extends App {
 	
 	function _buildPulls($pulls, $on=null, $with=array()) {
 		$builtPulls = array();
-		if(!isset($on)) {
-			$on = $this->tableName;
-		}
-		D::log($pulls, 'pulls');
+		
+	//	D::log($pulls, 'pulls');
 		foreach($pulls as $k => $pull) {
+			
+		
+			if(is_string($k)) {
+				//sub join?
+				//pretend $pull is an array
+				
+				
+				/*
+D::log($k, '$k');
+				
+				$pullRel = $this->relationships[$k];
+				
+				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+					$flName = $fKey;
+					$model = $this->model(f_first($pullRel[$fKey]));
+				} else {
+					$flName = $pull;
+					$model = $this->model(f_first($pullRel));
+				}
+				
+				if(is_array($rfName = f_last($pullRel))) {
+					$rfName = f_last(f_last($pullRel));
+				}
+				D::log($pull, 'subjoin $pulls');
+				$builtPulls[] = D::log($model->_buildPull($k, $pullRel, $on, $flName, $rfName), 'subjoin' );
+				
+				$builtPulls = array_merge($builtPulls, $model->_buildPulls((array)$pull, $on));
+*/
+				
+			} else {
+			
+				if(is_array($pull)) {
+					$builtPulls = array_merge($builtPulls, $this->_buildPulls($pull, $on));
+					continue;
+				}
+				//regular join
+				
+				
+				
+				
+				////
+				$pullRel = $this->relationships[$pull];
+				
+				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+					$flName = $fKey;
+					$model = $this->model(f_first($pullRel[$fKey]));
+				} else {
+					$flName = $pull;
+					$model = $this->model(f_first($pullRel));
+				}
+				
+				if(is_array($rfName = f_last($pullRel))) {
+					$rfName = f_last(f_last($pullRel));
+				}
+				/*
+				$model
+				$pullRel
+				$flName
+				$rfName
+				*/
+				/////////
+			//	D::log($pullRel, 'pullRel');
+			//	D::log($with, '$with not_array single build');
+			//	D::log($pull, '$pull not_array single build');
+				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
+			}
+		
+		
+		
+			/*
+				Any time there is a key:
+			- there is a sub join needed 
+				- Sub joins need:
+					- left field name
+						- is the key in the parents relation ship structure
+							/%
+							*'user'* => array(
+								'User',
+								'id'
+							),
+							%/
+					- right field name
+						- is the last element in the parents relation ship structure
+							/%
+							'user' => array(
+								'User',
+								*'id'*
+							),
+							%/
+					- table alias
+					- right table name = table alias
+					- left table name
+						- Is the parents alias 
+					
+					
+			- this sub join is based on the realtionShip structure of the key in the current model
+			*/
+		
+			//
+			/*
 			if(!is_string($k)) {
 				if(is_array($pull)) {
 					D::log($pull, 'not_string is_array $pull');
@@ -88,27 +186,24 @@ class SweetModel extends App {
 					$pullRel = $this->relationships[$pull];
 					
 					
+					if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+						$flName = $fKey;
+						$model = $this->model(f_first($pullRel[$fKey]));
+					} else {
+						$flName = $pull;
+						$model = $this->model(f_first($pullRel));
+					}
 					
+					if(is_array($rfName = f_last($pullRel))) {
+						$rfName = f_last(f_last($pullRel));
+					}
 					
 				}
 			} else {
 				//is string
 				
 				$pullRel = $this->relationships[$k];
-				/*
-				if(is_array($pull)) {
-					// $k is getting skipped!
-					D::log($pull, 'is_string is_array $pull');
-					$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on), 'is_string is_array builder'));
-				} else {
-					if(is_array($rfName = f_last($pullRel))) {
-						$rfName = f_last(f_last($pullRel));
-					}
-					D::log($pullRel, 'pullRel');
-					
-					$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);	
-				}
-				*/
+				
 			}
 			
 			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
@@ -128,12 +223,6 @@ class SweetModel extends App {
 				D::log($k, 'is_string is_array $k');
 				//D::log(f_construct($k, (array) $on), 'f_construct $k');
 				
-				
-				/*
-				
-				Need to f_construct the $k on the front of each of the $pull items.
-				*/
-				
 				D::log($pull, 'is_string is_array $pull');
 				//
 				
@@ -147,6 +236,7 @@ class SweetModel extends App {
 				D::log($pull, '$pull not_array single build');
 				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
 			}
+			*/
 			
 			
 			
@@ -202,8 +292,7 @@ class SweetModel extends App {
 		//D::log($model->_buildPulls($mExtraPuls), 'extra pulls');
 		
 		
-		//D::log($builtPulls, 'builtPulls');
-		return $builtPulls;
+		return D::log($builtPulls, 'builtPulls');
 	}
 	
 	
@@ -255,7 +344,7 @@ Want:
 		foreach(array_keys($this->fields) as $field) {
 			$select[$pull . '.' . $field] = $pull . '.' . $field;
 		}
-		D::log($select, 'built select');
+	//	D::log($select, 'built select');
 		return array(
 			'join' => $join,
 			'select' => $select
