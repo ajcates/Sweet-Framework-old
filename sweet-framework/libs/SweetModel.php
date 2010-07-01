@@ -83,8 +83,7 @@ class SweetModel extends App {
 				//pretend $pull is an array
 				
 				
-				/*
-D::log($k, '$k');
+				D::log($k, '$k');
 				
 				$pullRel = $this->relationships[$k];
 				
@@ -102,8 +101,10 @@ D::log($k, '$k');
 				D::log($pull, 'subjoin $pulls');
 				$builtPulls[] = D::log($model->_buildPull($k, $pullRel, $on, $flName, $rfName), 'subjoin' );
 				
-				$builtPulls = array_merge($builtPulls, $model->_buildPulls((array)$pull, $on));
-*/
+				
+				
+				//f_construct($k, (array)$on);
+				$builtPulls = array_merge($builtPulls, D::log( $model->_buildPulls((array)$pull, $k), 'subjoins') );
 				
 			} else {
 			
