@@ -23,6 +23,8 @@ class Query extends App {
 	private $_joins;
 	private $_joinOns;
 	static public $_fromValue;
+	static public $_fromLimit;
+	
 	private $_whereValue;
 	private $_limit;
 	private $_orderBy;
@@ -90,21 +92,7 @@ class Query extends App {
 		return $this;
 	}
 	
-	function from($val) {
-/*
-		join(', ',
-			f_keyMap(
-				function($v, $k) {
-					if(is_string($k)) {
-						return $v . ' AS ' $v;
-					}
-					return $v;
-				},
-				$val
-			)
-		);
-*/
-			
+	function from($val, $limit=null) {	
 		if(is_array($val)) {
 			Query::$_fromValue = f_keyMap(
 				function($v, $k) {
@@ -117,12 +105,10 @@ class Query extends App {
 			);
 		} else {
 			Query::$_fromValue = $val;
+			if(isset($limit)) {
+				Query::$_fromLimit = array_map('intval', (array)$limit);
+			}
 		}
-		
-		//Query::$_fromValue = f_flatten(func_get_args());
-		
-		
-		
 		return $this;
 	}
 	public function where() {
@@ -273,9 +259,12 @@ class Query extends App {
 	 	}
 	}
 	
-	function _buildLimit() {
-		if(!empty($this->_limit)) {
-			return "\n" . ' LIMIT ' . join(', ', $this->_limit);
+	function _buildLimit($limit=null) {
+		if(!isset($limit)) {
+			$limit = $this->_limit;
+		}
+		if(!empty($limit)) {
+			return "\n" . ' LIMIT ' . join(', ', $limit);
 		}
 	}
 	
@@ -308,6 +297,12 @@ class Query extends App {
 			case 'select':
 				//adds in our select values
 				D::log('hello');
+				
+				if(isset(Query::$_fromLimit)) {
+					Query::$_fromValue = '(SELECT * FROM ' . Query::$_fromValue . $this->_buildLimit(Query::$_fromLimit) . ') AS ' . Query::$_fromValue;
+				}
+				
+				
 				$sqlString = 'SELECT ' . $this->_buildSelect() . "\n" . ' FROM ' . join(', ', (array)Query::$_fromValue) . $this->_buildJoins() .  $this->_buildWhereString($this->_whereValue) . $this->_buildOrderBy() . $this->_buildLimit();
 				break;
 			case 'update':

@@ -44,7 +44,7 @@ class Admin extends App {
 				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
 				
 				
-				'pages' => D::log($this->model('Pages')->pull(array('user', 'tags' => array('tag', 'user') ) )->all(), 'Pages')
+				'pages' => D::log($this->model('Pages')->find(14, 12)->pull(array('user', 'tags' => array('tag', 'user') ) )->all(), 'Pages')
 				
 				
 				

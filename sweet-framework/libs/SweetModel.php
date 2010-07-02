@@ -13,7 +13,8 @@ class SweetModel extends App {
 	var $_buildOptions = array();
 	
 	function find() {
-		$this->_buildOptions['find'] = func_get_args();
+		$this->_buildOptions['find'] = D::log(func_get_args(), 'find args');
+		
 		return $this;
 	}
 	
@@ -35,7 +36,6 @@ class SweetModel extends App {
 	}
 	
 	function pull() {
-		D::log(func_get_args(), 'pull args');
 		$this->_buildOptions['pull'] = func_get_args();
 		return $this;
 	}
@@ -61,29 +61,29 @@ class SweetModel extends App {
 			$select += (array)$build['select'];
 		}
 		
-		// -- CUTTERS
 		
-		//$this->relationships
-		
-		
+		return $this->libs->Query->select($select)->join($join)->from($this->tableName, @$this->_buildOptions['limit'])->where($this->_buildFind(@$this->_buildOptions['find']))->results();
+	}
 	
-//		return $this->libs->Query->select('*')->join($join)->from($this->tableName)->where()->go()->getDriver();
-		return $this->libs->Query->select($select)->join($join)->from($this->tableName)->where()->results();
+	function _buildFind($find=array()) {
+		foreach($find as $k => $arg) {
+			if(is_int($k) && is_array($arg)) {
+				$find = array_merge($find, $this->_buildFind($arg));
+			} else if(is_string($k) && array_key_exists($k, $this->fields)) {
+				unset($find[$k]);
+				$find[$this->tableName . '.' . $k] = $arg;
+			} else if(is_numeric($arg)) {
+				$find[$this->tableName . '.' . $this->pk][] = $arg;
+			}
+		}
+		return $find;
 	}
 	
 	function _buildPulls($pulls, $on=null, $with=array()) {
 		$builtPulls = array();
-		
-	//	D::log($pulls, 'pulls');
 		foreach($pulls as $k => $pull) {
-			
-		
 			if(is_string($k)) {
 				//sub join?
-				//pretend $pull is an array
-				
-				
-				D::log($k, '$k');
 				
 				$pullRel = $this->relationships[$k];
 				
@@ -98,26 +98,16 @@ class SweetModel extends App {
 				if(is_array($rfName = f_last($pullRel))) {
 					$rfName = f_last(f_last($pullRel));
 				}
-				D::log($pull, 'subjoin $pulls');
-				$builtPulls[] = D::log($model->_buildPull($k, $pullRel, $on, $flName, $rfName), 'subjoin' );
+				$builtPulls[] = $model->_buildPull($k, $pullRel, $on, $flName, $rfName);
 				
-				
-				
-				
-				$builtPulls = array_merge($builtPulls, D::log( $model->_buildPulls((array)$pull, $k, f_push($k, (array)$with) ), 'subjoins') );
+				$builtPulls = array_merge($builtPulls, $model->_buildPulls((array)$pull, $k, f_push($k, (array)$with) ));
 				
 			} else {
-			
 				if(is_array($pull)) {
 					$builtPulls = array_merge($builtPulls, $this->_buildPulls($pull, $on, $with));
 					continue;
 				}
 				//regular join
-				
-				
-				
-				
-				///
 				$pullRel = $this->relationships[$pull];
 				
 				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
@@ -131,214 +121,17 @@ class SweetModel extends App {
 				if(is_array($rfName = f_last($pullRel))) {
 					$rfName = f_last(f_last($pullRel));
 				}
-				/*
-				$model
-				$pullRel
-				$flName
-				$rfName
-				*/
-				/////////
-			//	D::log($pullRel, 'pullRel');
-			//	D::log($with, '$with not_array single build');
-			//	D::log($pull, '$pull not_array single build');
-				
-				
-				
-				
 				$builtPulls[] = $model->_buildPull(join('_', f_push($pull, $with)), $pullRel, $on, $flName, $rfName);
 			}
-		
-		
-		
-			/*
-				Any time there is a key:
-			- there is a sub join needed 
-				- Sub joins need:
-					- left field name
-						- is the key in the parents relation ship structure
-							/%
-							*'user'* => array(
-								'User',
-								'id'
-							),
-							%/
-					- right field name
-						- is the last element in the parents relation ship structure
-							/%
-							'user' => array(
-								'User',
-								*'id'*
-							),
-							%/
-					- table alias
-					- right table name = table alias
-					- left table name
-						- Is the parents alias 
-					
-					
-			- this sub join is based on the realtionShip structure of the key in the current model
-			*/
-		
-			//
-			/*
-			if(!is_string($k)) {
-				if(is_array($pull)) {
-					D::log($pull, 'not_string is_array $pull');
-					$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls($pull, $on, $with), 'not_string is_array builder') );
-					continue;
-				} else {
-					//not string
-					$pullRel = $this->relationships[$pull];
-					
-					
-					if(is_string($fKey = f_first(array_keys($pullRel)) )) {
-						$flName = $fKey;
-						$model = $this->model(f_first($pullRel[$fKey]));
-					} else {
-						$flName = $pull;
-						$model = $this->model(f_first($pullRel));
-					}
-					
-					if(is_array($rfName = f_last($pullRel))) {
-						$rfName = f_last(f_last($pullRel));
-					}
-					
-				}
-			} else {
-				//is string
-				
-				$pullRel = $this->relationships[$k];
-				
-			}
-			
-			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
-				$flName = $fKey;
-				$model = $this->model(f_first($pullRel[$fKey]));
-			} else {
-				$flName = $pull;
-				$model = $this->model(f_first($pullRel));
-			}
-			
-			if(is_array($rfName = f_last($pullRel))) {
-				$rfName = f_last(f_last($pullRel));
-			}
-			
-			if(is_array($pull)) {
-				// $k is getting skipped!
-				D::log($k, 'is_string is_array $k');
-				//D::log(f_construct($k, (array) $on), 'f_construct $k');
-				
-				D::log($pull, 'is_string is_array $pull');
-				//
-				
-				$builtPulls[] = $model->_buildPull($k, $pullRel, $k, $flName, $rfName);
-				
-				$builtPulls = array_merge($builtPulls, D::log($model->_buildPulls($pull, $on, f_construct($k, $with)), 'is_string is_array builder'));
-			} else {
-				
-				D::log($pullRel, 'pullRel');
-				D::log($with, '$with not_array single build');
-				D::log($pull, '$pull not_array single build');
-				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
-			}
-			*/
-			
-			
-			
-			/*
-			foreach((array)$pull as $p) {
-				$builtPulls[] = $model->_buildPull($p, $pullRel, $on, $flName, $rfName);
-			}
-			*/
-			
-			
-			
-			
-			
-			/*
-			if(is_array($pull)) {
-				//$builtPulls += (array) D::log($this->_buildPulls(array_keys($pull)), 'builder');
-				D::log($pull, 'pull is_array');
-				
-				$builtPulls = array_merge($builtPulls,  D::log($this->_buildPulls(array_keys($pull), $pull, $on), 'builder') );
-				
-			} else {
-				if(is_string($k)) {
-					$pullRel = $this->relationships[$k];
-				} else {
-					$pullRel = $this->relationships[$pull];
-				}
-				
-				
-				if(is_string($fKey = f_first(array_keys($pullRel)) )) {
-					$flName = $fKey;
-					$model = $this->model(f_first($pullRel[$fKey]));
-				} else {
-					$flName = $pull;
-					$model = $this->model(f_first($pullRel));
-				}
-				
-				if(is_array($rfName = f_last($pullRel))) {
-					$rfName = f_last(f_last($pullRel));
-				}
-				D::log($pullRel, 'pullRel');
-				
-				
-				//D::log(, 'extra puls');
-				$builtPulls[] = $model->_buildPull($pull, $pullRel, $on, $flName, $rfName);
-				if(isset($mExtraPuls[$pull] )) {
-					D::log($mExtraPuls[$pull], 'mExtraPlus');
-					//i need to pass the $pull key im useing to the building…
-					$builtPulls = array_merge($builtPulls, $model->_buildPulls((array) $mExtraPuls[$pull], array(), $pull ) );
-				}
-			}
-			*/
 		}
-		//D::log($model->_buildPulls($mExtraPuls), 'extra pulls');
 		
-		
-		return D::log($builtPulls, 'builtPulls');
+		return $builtPulls;
 	}
 	
 	
 	function _buildPull($pull, $pullRel, $tableName, $lfName=null, $rfName=null) {
 		$select = $join = array();
-		/*
-Current:
- LEFT JOIN Users AS user
-	ON Pages.user = user.id 
- LEFT JOIN PageTags AS tags
-	ON Pages.id = tags.page 
- LEFT JOIN Tags AS tag
-	ON tags.tag = tag.id
-	
-Want:
- LEFT JOIN Users AS user
-	ON Pages.user = user.id 
- LEFT JOIN PageTags AS tags
-	ON Pages.id = tags.page
- LEFT JOIN Tags AS tags_tag
-	ON tags.tag = tags_tag.id
- LEFT JOIN Users AS tags_user
-	ON tags.user = tags_user.id	
-
-*/
-		
-/*
-		if(is_string($fKey = f_first(array_keys($pullRel)))) {
-		//	$model = $this->model(f_first($pullRel[$fKey]));
-			$join[$tableName . ' AS ' . $pull] = array(
-				$this->tableName . '.' . $fKey => $pull . '.' . f_last($pullRel)
-			);
-		} else {
-		//	$model = $this->model(f_first($pullRel));
-			
-		}
-*/
 		//JOIN CODE:
-		D::log($tableName, 'tName');
-		
-		D::log($pull, '_buildPull $pull');
 		
 		if(is_array($tableName)) {
 			$tableName = join('_', ($tableName));
@@ -347,8 +140,6 @@ Want:
 		$join[$this->tableName . ' AS ' . $pull] = array(
 			$tableName . '.' . $lfName => $pull . '.' . $rfName
 		);
-		D::log($join, 'built join');
-		
 		
 		//SELECT CODE:
 		foreach(array_keys($this->fields) as $field) {
@@ -360,10 +151,6 @@ Want:
 			'select' => $select
 		);
 	}
-	
-	
-	
-	
 	
 	function save() {
 		
@@ -378,7 +165,28 @@ Want:
 	}
 	
 	function all() {
-		return $this->_build();
+		//foreach( as )
+		$items = $this->_build();
+		if(!empty($items)) {
+			$returnItems = array();
+			$i = 0;
+			$last = null;
+			foreach($items as $item) {
+				
+				if($item->{$this->pk} == $last) {
+					
+					//$returnItems[$i];
+					//foreach($pulls as $pull)
+					f_call(array($returnItems[$i], 'pass'), array($item));
+				} else {
+					$i++;
+					$returnItems[$i] = new SweetRow($this, $item);
+					$last = $item->{$this->pk};
+				}
+			}
+		}
+	
+		return $items;
 	}
 	
 	function one() {
@@ -388,11 +196,151 @@ Want:
 	
 }
 
+class SweetRow extends App {
 
+		/*
+			what if I came up with the concept of sweet data?
+			sweetData vs sweetRow
+			basicly a data structure for indivual rows that is capable of retriving more rows
+			//what abilities would the sweetRow have?
+				magic reading methods…
+					would first return back a sub row
+					that would call the get_field methods correctly
+					
+				the ability to insert more data on the fly
+				
+				seprates out normal row data and sub row data;
+					
+				
+				ability to save data back into the db
+					do this keep edited data sperate main data
+				
+				
+			*/
+	private $_data = array();
+	private $_errors = array();
+	private $_model;
+	
+	function __construct($model, $item) {
+		$this->_data[] = $item;
+		$this->_model = $model;
+	}
+	
+	function pass($item) {
+		$this->_data[] = $item; 
+	}
+	
+	function __set($var, $value) {
+		/*
+		$model = $this->_model;
+		if (is_callable(array($this->getLibrary(f_first($model::$objects[$var])), 'set_' . $model::$objects[$var][1]))) {
+			$value =  $this->getLibrary(f_first($model::$objects[$var]))->{'set_' . $model::$objects[$var][1]}( $var, f_last($model::$objects[$var]) );
+		}
+		if(count((array)$value) > 1) {
+			D::log($value, "Caught error");
+			$this->_errors[$var] = $value;
+		} else {
+			$this->_data[$var] = f_first((array)$value);
+			$this->$var = $this->_data[$var];
+		}
+		*/
+	}
+	
+	function __get($var) {
+		if(array_key_exists($var, $this->realtionShips)) {
+			//
+		}
+		/*
+		$model = $this->_model;
+		if(method_exists($this->getLibrary(f_first($model::$objects[$var])), 'get_' . $model::$objects[$var][1])) {
+    		return $this->getLibrary(f_first($model::$objects[$var]))->{'get_' . $model::$objects[$var][1]}($this->_data[$var], f_last($model::$objects[$var]) );
+    	}
+    	
+		return $this->_data[$var];
+		*/
+	}
+	
+	function __call($var, $args=array()) {
+		/*
+		$model = $this->_model;
+		if(array_key_exists($var, $model::$belongsTo)) {
+			//->find(array($model::$belongsTo[$var] => $this->_data[$model::$PK] ))->all()
+			//@todo add in a limit when im not working with fucktarded mssql
+			return $this->getModel($var)->find(array($model::$belongsTo[$var] => $this->_data[$model::$PK] ))->all();
+		} else if(array_key_exists($var, $model::$objects) && method_exists($this->getLibrary(f_first($model::$objects[$var])), 'get_' . $model::$objects[$var][1])) {
+			return $this->getLibrary(f_first($model::$objects[$var]))->{'get_' . $model::$objects[$var][1]}( $var, f_last($model::$objects[$var]) );
+		} else {
+			D::warn('wtf are you trying todo?');
+		}
+		*/
+	}
+	
+	function set($var, $value) {
+		/*
+		$this->_data[$var] = $value;
+		return $this;
+		*/
+	}
+	
+	function get($var, $fetch=false) {
+		/*
+		if(is_array($var) && 1 < count($var)) {
+			return $this->{f_first($var)}->get(f_rest($var), $fetch);
+		}
+		if($fetch) {
+			return $this->_data[f_first((array)$var)];
+		} else {
+			return $this->{f_first((array)$var)};
+		}
+		*/
+	}
+	
+	function save() {
+		/* @todo figure out if this needs to return its self. */
+		/*
+		if(!empty($this->_errors)) {
+			return false;
+		}
+		$model = $this->_model;
+		return $this->getLibrary('Query')->update($model::$tableName)->where(array($model::$PK => $this->_data[$model::$PK]))->set($this->_data)->go();
+		*/
+	}
+	
+	public function delete() {
+		return $this->_model->find($this->_model->pk)->delete();
+	}
+}
 
 
 /*
 
+
+Any time there is a key:
+		- there is a sub join needed 
+			- Sub joins need:
+				- left field name
+					- is the key in the parents relation ship structure
+						/%
+						*'user'* => array(
+							'User',
+							'id'
+						),
+						%/
+				- right field name
+					- is the last element in the parents relation ship structure
+						/%
+						'user' => array(
+							'User',
+							*'id'*
+						),
+						%/
+				- table alias
+				- right table name = table alias
+				- left table name
+					- Is the parents alias 
+				
+				
+		- this sub join is based on the realtionShip structure of the key in the current model
 
 
 Maybe build out a cached structure of the joins attached to the model for the sweetrows?
