@@ -176,13 +176,14 @@ class SweetModel extends App {
 			$last = null;
 			foreach($items as $item) {
 				
+				/*
 				if(array_key_exists($item->{$this->pk}, $returnItems)) {
 					f_call(array($returnItems[$item->{$this->pk}], 'pass'), array($item));
 				} else {
 					$returnItems[$item->{$this->pk}] = new SweetRow($this, $item);
 				}
+				*/
 				
-				/*
 				if($item->{$this->pk} == $last) {
 					f_call(array($returnItems[$i], 'pass'), array($item));
 				} else {
@@ -190,7 +191,7 @@ class SweetModel extends App {
 					$returnItems[$i] = new SweetRow($this, $item);
 					$last = $item->{$this->pk};
 				}
-				*/
+				
 			}
 		}
 	
@@ -204,7 +205,7 @@ class SweetModel extends App {
 	
 }
 
-class SweetRow extends App {
+class SweetRow {
 
 	/*
 		what if I came up with the concept of sweet data?
@@ -257,16 +258,7 @@ class SweetRow extends App {
 			D::log($var, 'has relation ship');
 		//	D::log($this->_data, 'data');
 			
-			/*
-			//model
-			$pullRel = $this->_model->relationships[$var];
-			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
-				//$fKey = $var;
-				SweetFramework::getClass('model', f_first($pullRel[$fKey])
-			} else {
-				SweetFramework::getClass('model', f_first($pullRel));
-			}
-			*/
+			
 			
 			//$keys = array();
 			
@@ -279,9 +271,162 @@ class SweetRow extends App {
 					return ($var == substr($k, 0, $varL));
 				}
 			);
+			
+			
+			/*
+			$keys = array_map(
+				function($k) use($varL) {
+					return substr($k, $varL);
+				},
+				array_filter(
+					array_keys((array)f_first($this->_data)),
+					function($k) use($var, $varL) {
+						return ($var == substr($k, 0, $varL));
+					}
+				)
+			);
+			*/
+			
 			D::log($keys, 'keys');
 			
 			
+			
+			
+			
+			
+			/*
+			$return = array_map(
+				function($row) use($keys) {
+					$r = new stdClass();
+					foreach($keys as $key) {
+						$r->$key = $row->$key;
+					}
+					return $r;
+				},
+				$this->_data
+			);
+			*/
+			
+			/*
+			$return = array();
+			foreach($this->_data as $row) {
+				$r = new stdClass();
+				foreach($keys as $key) {
+					$r->$key = $row->$key;
+				}
+				$return[] = $r;
+			}
+			*/
+						//model
+			//$firstRow = f_first($return);
+			//D::log($return, '$return');
+			
+			$pullRel = $this->_model->relationships[$var];
+			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+				//$fKey = $var;
+				/* 
+				ORM TODO:
+				- is this where i tell if  i have a m2m relation ship?
+					- does it make sense for Forigen Keys to exist like this?
+					- if it is a forigen key do i only need to return one sweet row item?
+					- do m2m always need to return an array?
+					
+				- how do i handle backwards relationships?
+					- how were they defined before?
+					- how were they handeled before?
+					- do they even need to be defined?
+					- use cases for backwards relationships?
+				*/
+				$model = SweetFramework::getClass('model', f_first($pullRel[$fKey]));
+				/*
+				$newSweetRow = new SweetRow(
+					SweetFramework::getClass('model', f_first($pullRel[$fKey])),
+					$firstRow
+				);
+				*/
+			} else {
+				$model = SweetFramework::getClass('model', f_first($pullRel));
+				/*
+				$newSweetRow = new SweetRow(
+					SweetFramework::getClass('model', f_first($pullRel)),
+					$firstRow
+				);
+				*/
+			}
+			
+			$returnItems = array();
+			$i = 0;
+			$last = null;
+			
+			$varL++;
+			if(!isset($model->pk)) {
+			
+				foreach($this->_data as $row) {
+					$item = new stdClass();
+					foreach($keys as $key) {
+						D::log(substr($key, $varL), 'subkey');
+						$item->{substr($key, $varL)} = $row->$key;
+					}
+					$returnItems[] = new SweetRow($model, $item);
+				}
+				
+			} else {
+				foreach($this->_data as $row) {
+					$item = new stdClass();
+					foreach($keys as $key) {
+						/*
+						D::log(substr($key, $varL), 'subkey');
+						$item->{substr($key, $varL)} = $row->$key;
+						*/
+						
+						if($subKey = substr($key, $varL)) {
+							
+							$item->$subKey = $row->$key;
+							
+						}
+						
+						
+						
+					}
+					
+					if($item->{$model->pk} == $last) {
+						f_call(array($returnItems[$i], 'pass'), array($item));
+					} else {
+						$i++;
+						$returnItems[$i] = new SweetRow($model, $item);
+						$last = $item->{$model->pk};
+					}
+					
+					//$return[] = $r;
+				}
+			}
+			
+			if(count($returnItems) > 1) {
+				D::log($var, 'var many');
+				return $returnItems;
+			} else {
+				D::log($var, 'var single');
+				return f_first($returnItems);
+			}
+			
+			
+			/*
+			$i = 0;
+			$last = null;
+			foreach($return as $item) {
+			
+				if($item->{$this->pk} == $last) {
+					f_call(array($returnItems[$i], 'pass'), array($item));
+				} else {
+					$i++;
+					$returnItems[$i] = new SweetRow($this, $item);
+					$last = $item->{$this->pk};
+				}
+			
+			}
+			*/
+			
+		//	D::log($newSweetRow, '$newSweetRow');
 			////////////
 			
 			//$fields = array_keys( SweetFramework::getClass('model', f_first($pullRel[$fKey]) )->fields ) //SweetFramework::getClass('model', f_first($pullRel[$fKey]) )->relationships;
