@@ -42,20 +42,9 @@ class Admin extends App {
 				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user' => 'type') ))->all(), 'Pages')
 				//'pages' => D::log($this->model('Pages')->pull('user', 'tags')->all(), 'Pages')
 				//'pages' => D::log($this->model('Pages')->pull('user', array('tags' => array('tag', 'user') ))->all(), 'Pages')
-				
-				
-				'pages' => D::log($this->model('Pages')->find(14, 12)->pull(array('user', 'tags' => array('tag', 'user') ) )->all(), 'Pages')
-				
-				
-				
+				'pages' => $this->model('Pages')->pull(array('user', 'tags' => array('tag', 'user') ) )->all()
 				//'pages' => D::log($this->model('Pages')->pull('user', array('tags') ))->all(), 'Pages')
 				//'pages' => D::log($this->model('Pages')->pull('user', 'tags' ))->all(), 'Pages')
-				
-				
-				
-				
-				
-				
 				//'pages' => D::log($this->model('Pages')->all(), 'Pages')
 				//'pages' => D::log($this->model('Pages')->limit(3)->pull('user')->all(), 'Pages')
 			))

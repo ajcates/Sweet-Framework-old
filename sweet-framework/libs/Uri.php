@@ -26,21 +26,16 @@ class Uri extends App {
 		$this->domain = $_SERVER['HTTP_HOST'];
 		//http or https?
 		$this->protocol = strtolower(strstr($_SERVER['SERVER_PROTOCOL'], '/', true));;
-		D::log($_SERVER, 'servar ');
 		//$_SERVER['REQUEST_URI']
 		//
 		
-		D::log($this->request, 'request');
+		D::log($this->request, 'URI Request');
 		
 		//$_SERVER['REQUEST_URI'], '/')
 		//$_SERVER['REQUEST_URI']
 		$folder = strstr($_SERVER['REQUEST_URI'] .'?', '?', true);
 		
-
-		
 		define('URL', $this->protocol . '://' . $this->domain . substr($folder, 0, strrpos($folder, '/')) . '/');
-		
-		D::log(URL, 'URL');
 		
 		
 		if($this->lib('Config')->get('site', 'prettyUrls')) {
@@ -80,21 +75,15 @@ class Uri extends App {
 				return $this->loadController(f_first(f_first(f_last($page))), $this->count+=1);
 			}
 			$page[$this->count] = f_first(f_last($page));
-			//D::log($page[$part], 'page o parts');
 		}
-		D::log($page, 'Initing Controller…');
+		D::log($class, 'Controller Loading');
 		
 		$this->controller = new $class();
-		
-		//$this->controller->getLibrary('Databases/Query.php');
-		
-		/*@todo make "shortcuts" more dynamic */
-		//$this->controller->template =& $this->controller->lib->Template;
 		
 		if(empty($page[$this->count])) {
 			return f_callable(array($this->controller, 'index'));
 		} else {
-			if(method_exists($class, $page[$this->count])) {
+			if(method_exists($class, D::log($page[$this->count], 'Controller Function')) ) {
 				return f_callable(array(
 					$this->controller,
 					$page[$this->count]
@@ -125,26 +114,21 @@ class Uri extends App {
 		if(!empty($regexs)) {
 			$this->uriArray = $this->regexArray($regexs);
 			$pop = true;
-			D::log('Captin we found something!');
 		}
 		if(empty($this->uriArray)) {
 			$this->uriArray = $this->regularUrl();
 			
 		}
-		
-		D::log($this->uriArray, 'uri array');
 		return $this->uriArray;
 	}
 	
 	
 	function regexArray($regexs) {
 		$matches = array();
-		D::log($_SERVER['QUERY_STRING']);
 		foreach($regexs as $regex => $func) {
 			preg_match_all($regex, $_SERVER['QUERY_STRING'], $matches);
 			if(f_first($matches)) {
 				D::log($regex, 'regex');
-				D::log($func, 'fucn');
 				return f_push(
 					array($func),
 					f_map(

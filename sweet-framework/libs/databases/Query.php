@@ -295,9 +295,7 @@ class Query extends App {
 		$sqlString = '';
 		switch ($this->_mode) {
 			case 'select':
-				//adds in our select values
-				D::log('hello');
-				
+				//adds in our select values				
 				if(isset(Query::$_fromLimit)) {
 					Query::$_fromValue = '(SELECT * FROM ' . Query::$_fromValue . $this->_buildLimit(Query::$_fromLimit) . ') AS ' . Query::$_fromValue;
 				}

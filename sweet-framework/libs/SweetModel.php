@@ -51,18 +51,21 @@ class SweetModel extends App {
 	}
 	
 	function _build() {
-		$join = $select = array();
+		$where = $join = $select = array();
 		foreach(array_keys($this->fields) as $field) {
 			$select[] = $this->tableName . '.' . $field;
 		}
-		
-		foreach($this->_buildPulls($this->_buildOptions['pull'], $this->tableName) as $build) {
-			$join += (array)$build['join'];
-			$select += (array)$build['select'];
+		if(array_key_exists('pull', $this->_buildOptions)) {
+			foreach($this->_buildPulls($this->_buildOptions['pull'], $this->tableName) as $build) {
+				$join += (array)$build['join'];
+				$select += (array)$build['select'];
+			}
+		}
+		if(array_key_exists('find', $this->_buildOptions)) {
+			$where = $this->_buildFind($this->_buildOptions['find']);
 		}
 		
-		
-		return $this->libs->Query->select($select)->join($join)->from($this->tableName, @$this->_buildOptions['limit'])->where($this->_buildFind(@$this->_buildOptions['find']))->results();
+		return $this->libs->Query->select($select)->join($join)->from($this->tableName, @$this->_buildOptions['limit'])->where($where)->results();
 	}
 	
 	function _buildFind($find=array()) {
@@ -173,20 +176,25 @@ class SweetModel extends App {
 			$last = null;
 			foreach($items as $item) {
 				
+				if(array_key_exists($item->{$this->pk}, $returnItems)) {
+					f_call(array($returnItems[$item->{$this->pk}], 'pass'), array($item));
+				} else {
+					$returnItems[$item->{$this->pk}] = new SweetRow($this, $item);
+				}
+				
+				/*
 				if($item->{$this->pk} == $last) {
-					
-					//$returnItems[$i];
-					//foreach($pulls as $pull)
 					f_call(array($returnItems[$i], 'pass'), array($item));
 				} else {
 					$i++;
 					$returnItems[$i] = new SweetRow($this, $item);
 					$last = $item->{$this->pk};
 				}
+				*/
 			}
 		}
 	
-		return $items;
+		return $returnItems;
 	}
 	
 	function one() {
@@ -198,25 +206,23 @@ class SweetModel extends App {
 
 class SweetRow extends App {
 
-		/*
-			what if I came up with the concept of sweet data?
-			sweetData vs sweetRow
-			basicly a data structure for indivual rows that is capable of retriving more rows
-			//what abilities would the sweetRow have?
-				magic reading methods…
-					would first return back a sub row
-					that would call the get_field methods correctly
-					
-				the ability to insert more data on the fly
+	/*
+		what if I came up with the concept of sweet data?
+		sweetData vs sweetRow
+		basicly a data structure for indivual rows that is capable of retriving more rows
+		//what abilities would the sweetRow have?
+			magic reading methods…
+				would first return back a sub row
+				that would call the get_field methods correctly
 				
-				seprates out normal row data and sub row data;
-					
+			the ability to insert more data on the fly
+			
+			seprates out normal row data and sub row data;
 				
-				ability to save data back into the db
-					do this keep edited data sperate main data
-				
-				
-			*/
+			
+			ability to save data back into the db
+				do this keep edited data sperate main data
+	*/
 	private $_data = array();
 	private $_errors = array();
 	private $_model;
@@ -247,8 +253,41 @@ class SweetRow extends App {
 	}
 	
 	function __get($var) {
-		if(array_key_exists($var, $this->realtionShips)) {
+		if(array_key_exists($var, $this->_model->relationships)) {
+			D::log($var, 'has relation ship');
+		//	D::log($this->_data, 'data');
+			
+			/*
+			//model
+			$pullRel = $this->_model->relationships[$var];
+			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+				//$fKey = $var;
+				SweetFramework::getClass('model', f_first($pullRel[$fKey])
+			} else {
+				SweetFramework::getClass('model', f_first($pullRel));
+			}
+			*/
+			
+			//$keys = array();
+			
+			////// KEYS:
+			
+			$varL = strlen($var);
+			$keys = array_filter(
+				array_keys((array)f_first($this->_data)),
+				function($k) use($var, $varL) {
+					return ($var == substr($k, 0, $varL));
+				}
+			);
+			D::log($keys, 'keys');
+			
+			
+			////////////
+			
+			//$fields = array_keys( SweetFramework::getClass('model', f_first($pullRel[$fKey]) )->fields ) //SweetFramework::getClass('model', f_first($pullRel[$fKey]) )->relationships;
 			//
+		} else if(array_key_exists($var, $this->_model->fields)) {
+			return f_first($this->_data)->$var;
 		}
 		/*
 		$model = $this->_model;
