@@ -30,9 +30,11 @@ class Admin extends App {
 	}
 	
 	function sandbox() {
+		/*
 		if(!$this->models->User->loggedIn()) {
 			return $this->libs->Uri->redirect('admin');
 		}
+		*/
 		
 		$this->libs->Template->set(array(
 			'title'=>'Dashboard',
@@ -49,19 +51,8 @@ class Admin extends App {
 				//'pages' => D::log($this->model('Pages')->limit(3)->pull('user')->all(), 'Pages')
 			))
 		))->render('admin/bases/content');
-
-		
-		
-		
-		
 		
 		/*
-		
-		
-		
-		
-		
-		
 		Any time there is a key:
 			- there is a sub join needed 
 				- Sub joins need:
@@ -106,15 +97,6 @@ class Admin extends App {
 		
 		
 		//////////////////==========
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		pull('user', array('tags' => array('tag', 'user') )):
 		SELECT
