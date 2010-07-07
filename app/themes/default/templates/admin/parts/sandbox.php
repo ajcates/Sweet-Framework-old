@@ -4,12 +4,21 @@
 		B::ul(join(array_map(
 			function($page) {
 				return B::li(
-					B::h3($page->title),
+					B::h2($page->title),
 					B::dl(
-						B::dt('User'),
+						B::dt('User:'),
 						B::dd($page->user->username),
-						B::dt('Tags'),
-						B::dd(print_r($page->tags, true))
+						B::dt('Tags:'),
+						B::dd(B::ul(
+							join(
+								array_map(
+									function($tag) {
+										return B::li($tag->tag->name);
+									},
+									$page->tags
+								)
+							)
+						))
 					)
 				);
 			},

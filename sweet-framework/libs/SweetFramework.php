@@ -7,6 +7,14 @@ require_once('App.php');
 	- Make sure the app/framework split is working correctly
 	- 
 */
+
+
+function __autoload($class) {
+
+
+
+}
+
 class SweetFramework extends App {
 
 	var $site;

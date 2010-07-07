@@ -10,6 +10,7 @@ class App {
 		if(is_array($lib)) {
 			return f_last(array_map(f_callable(array($this, 'lib')), $lib));
 		}
+		
 		return $this->libs->{SweetFramework::className($lib)} = SweetFramework::getClass('lib', $lib);
 	}
 	

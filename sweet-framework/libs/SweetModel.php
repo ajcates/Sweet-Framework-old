@@ -254,16 +254,56 @@ class SweetRow {
 	}
 	
 	function __get($var) {
-		if(array_key_exists($var, $this->_model->relationships)) {
-			D::log($var, 'has relation ship');
-		//	D::log($this->_data, 'data');
+		/* 
+		ORM TODO:
+		- is this where i tell if  i have a m2m relation ship?
+			- does it make sense for Forigen Keys to exist like this?
+				- not really, if its how m2m relationships are defined.
+				
+			- do foreign keys always have a field in the current model?
+				- yes.
+				
+			- if it is a forigen key do i only need to return one sweet row item?
+				- yes.
+			- do m2m always need to return an array?
+				- yes.
+			- what advantages do i have for detecting m2m relationships
+				- the differnces between fk and m2m code?
+			- what does the pk mean?
+				- //? the pk is used so you dont get an array of all the same item.
+					-if it is the same item it passes it to the sweetRow obj
+				- do you need it on m2m?
+					- shouldn't matter.
+					?no
+					?not always.
+						- the comments example on the pages models proves that it can be avaible.
+				- do you need it on fk?
+					yes.
+						//in order for a fk to point to something, that something needs a pk.
+						
+					// for the most part the fk is gonna be the same for each row.
+						- when is it differnent?
+							//if its differnt does that mean there are 2 items?
+								//this shouldn't be possible correct?
+							//?on m2m?
 			
+		- how do i handle backwards relationships?
+			- how were they defined before?
+			- how were they handeled before?
 			
+			- do they even need to be defined?
+				-yes.
 			
-			//$keys = array();
+			- use cases for backwards relationships?
+				- m2m relationships are backwards fk relationships. they already work.
 			
+		- What do i do if a pull wasn't called?
+			- how do i tell what pull was called?
+		- How do i update things with out pk's?
+		*/
+		
+		if(array_key_exists($var, $this->_model->relationships)) {			
 			////// KEYS:
-			
 			$varL = strlen($var);
 			$keys = array_filter(
 				array_keys((array)f_first($this->_data)),
@@ -271,96 +311,49 @@ class SweetRow {
 					return ($var == substr($k, 0, $varL));
 				}
 			);
-			
-			
-			/*
-			$keys = array_map(
-				function($k) use($varL) {
-					return substr($k, $varL);
-				},
-				array_filter(
-					array_keys((array)f_first($this->_data)),
-					function($k) use($var, $varL) {
-						return ($var == substr($k, 0, $varL));
-					}
-				)
-			);
-			*/
-			
-			D::log($keys, 'keys');
-			
-			
-			
-			
-			
-			
-			/*
-			$return = array_map(
-				function($row) use($keys) {
-					$r = new stdClass();
-					foreach($keys as $key) {
-						$r->$key = $row->$key;
-					}
-					return $r;
-				},
-				$this->_data
-			);
-			*/
-			
-			/*
-			$return = array();
-			foreach($this->_data as $row) {
-				$r = new stdClass();
-				foreach($keys as $key) {
-					$r->$key = $row->$key;
-				}
-				$return[] = $r;
-			}
-			*/
-						//model
-			//$firstRow = f_first($return);
-			//D::log($return, '$return');
-			
-			$pullRel = $this->_model->relationships[$var];
-			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
-				//$fKey = $var;
-				/* 
-				ORM TODO:
-				- is this where i tell if  i have a m2m relation ship?
-					- does it make sense for Forigen Keys to exist like this?
-					- if it is a forigen key do i only need to return one sweet row item?
-					- do m2m always need to return an array?
-					
-				- how do i handle backwards relationships?
-					- how were they defined before?
-					- how were they handeled before?
-					- do they even need to be defined?
-					- use cases for backwards relationships?
-				*/
-				$model = SweetFramework::getClass('model', f_first($pullRel[$fKey]));
-				/*
-				$newSweetRow = new SweetRow(
-					SweetFramework::getClass('model', f_first($pullRel[$fKey])),
-					$firstRow
-				);
-				*/
-			} else {
-				$model = SweetFramework::getClass('model', f_first($pullRel));
-				/*
-				$newSweetRow = new SweetRow(
-					SweetFramework::getClass('model', f_first($pullRel)),
-					$firstRow
-				);
-				*/
-			}
-			
-			$returnItems = array();
-			$i = 0;
-			$last = null;
+			//D::log($keys, 'keys');
 			
 			$varL++;
-			if(!isset($model->pk)) {
+			$pullRel = $this->_model->relationships[$var];
 			
+			if(is_string($fKey = f_first(array_keys($pullRel)) )) {
+				//m2m
+				$model = SweetFramework::getClass('model', f_first($pullRel[$fKey]));
+				foreach($this->_data as $row) {
+					$item = new stdClass();
+					foreach($keys as $key) {
+						//D::log(substr($key, $varL), 'subkey');
+						$item->{substr($key, $varL)} = $row->$key;
+					}
+					$returnItems[] = new SweetRow($model, $item);
+				}
+				return $returnItems;
+			} else {
+				$model = SweetFramework::getClass('model', f_first($pullRel));
+				$last = null;
+				$returnItems = array();
+				foreach($this->_data as $row) {
+					$item = new stdClass();
+					foreach($keys as $key) {
+						if($subKey = substr($key, $varL)) {
+							$item->$subKey = $row->$key;	
+						}	
+					}
+					if(isset($returnItem) && $returnItem->{$model->pk} == $last) {
+						$returnItem->pass($item);
+						//f_call(array($returnItem, 'pass'), array($item));
+					} else {
+						$returnItem = new SweetRow($model, $item);
+						$last = $item->{$model->pk};
+					}
+					
+					//$return[] = $r;
+				}
+				return $returnItem;
+			}
+			
+			/*
+if(!isset($model->pk)) {
 				foreach($this->_data as $row) {
 					$item = new stdClass();
 					foreach($keys as $key) {
@@ -369,26 +362,14 @@ class SweetRow {
 					}
 					$returnItems[] = new SweetRow($model, $item);
 				}
-				
 			} else {
 				foreach($this->_data as $row) {
 					$item = new stdClass();
 					foreach($keys as $key) {
-						/*
-						D::log(substr($key, $varL), 'subkey');
-						$item->{substr($key, $varL)} = $row->$key;
-						*/
-						
 						if($subKey = substr($key, $varL)) {
-							
-							$item->$subKey = $row->$key;
-							
-						}
-						
-						
-						
+							$item->$subKey = $row->$key;	
+						}	
 					}
-					
 					if($item->{$model->pk} == $last) {
 						f_call(array($returnItems[$i], 'pass'), array($item));
 					} else {
@@ -408,6 +389,7 @@ class SweetRow {
 				D::log($var, 'var single');
 				return f_first($returnItems);
 			}
+*/
 			
 			
 			/*

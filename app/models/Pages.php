@@ -34,6 +34,27 @@ class Pages extends SweetModel {
 	
 	/*
 	
+	
+	'comments' => array(
+		'id' => array(
+			'Comments',
+			'page'
+		)
+	)
+	
+	$this->comments[0]->user->username;
+	
+	//
+	
+	$this->user->username
+	
+	///
+	
+	$this->tags[3]
+	$this->tags[2]
+	
+	///
+	
 	'tags' => array('id' => array('PageTags', 'page', array(
 		'tag' => array('Tags', 'id'),
 		'user' => array('User', 'id')
