@@ -172,7 +172,7 @@ class SweetModel extends App {
 	}
 	
 	function delete() {
-	
+		return $this->libs->Query->delete()->from($this->tableName)->where($where)->limit(@$this->_buildOptions['limit'])->go();
 	}
 	
 	function all() {
@@ -207,7 +207,7 @@ class SweetModel extends App {
 	}
 	
 	function one() {
-	
+		return f_first($this->all());
 	}
 	
 	
