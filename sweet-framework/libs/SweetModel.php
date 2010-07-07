@@ -159,8 +159,16 @@ class SweetModel extends App {
 		
 	}
 	
-	function create() {
-		//execute some sql
+	function create($item) {
+		//@todo change this to func_get_args ?
+		if($this->libs->Query->insert($item)->into($this->tableName)->go()) {
+			if(is_array($item)) {
+				return new SweetRow($this, arrayToObj($item));
+			} else {
+				return new SweetRow($this, $item);
+			}
+		}
+		return false;
 	}
 	
 	function delete() {
@@ -208,6 +216,18 @@ class SweetModel extends App {
 class SweetRow {
 
 	/*
+	
+	- What do i do if a pull wasn't called?
+			- how do i tell what pull was called?
+		- How do i update things with out pk's?
+	- How do i get rid of null tags?
+		
+	
+	
+	
+	
+	////////
+	
 		what if I came up with the concept of sweet data?
 		sweetData vs sweetRow
 		basicly a data structure for indivual rows that is capable of retriving more rows
@@ -296,10 +316,6 @@ class SweetRow {
 			
 			- use cases for backwards relationships?
 				- m2m relationships are backwards fk relationships. they already work.
-			
-		- What do i do if a pull wasn't called?
-			- how do i tell what pull was called?
-		- How do i update things with out pk's?
 		*/
 		
 		if(array_key_exists($var, $this->_model->relationships)) {			
@@ -325,6 +341,7 @@ class SweetRow {
 						//D::log(substr($key, $varL), 'subkey');
 						$item->{substr($key, $varL)} = $row->$key;
 					}
+					D::log($item, 'm2m item');
 					$returnItems[] = new SweetRow($model, $item);
 				}
 				return $returnItems;

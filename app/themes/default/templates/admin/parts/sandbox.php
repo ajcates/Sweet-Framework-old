@@ -3,6 +3,7 @@
 		B::h4($test),
 		B::ul(join(array_map(
 			function($page) {
+				D::log(count($page->tags), 'page tags length');
 				return B::li(
 					B::h2($page->title),
 					B::dl(
@@ -26,3 +27,9 @@
 		)))
 	)
 ));
+
+
+
+
+
+
