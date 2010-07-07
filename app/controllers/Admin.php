@@ -53,6 +53,8 @@ class Admin extends App {
 		))->render('admin/bases/content');
 		
 		/*
+		
+		
 		Any time there is a key:
 			- there is a sub join needed 
 				- Sub joins need:
